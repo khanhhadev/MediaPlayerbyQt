@@ -26,30 +26,27 @@ Item {
                 radius: 3
                 color: "#2E4D5F"
                 Drag.active: mouseArea.drag.active
-                onXChanged: {
-                    myPlayer.position = myPlayer.position + mouseArea.drag.x - idProgressBar.x
-                }
 
-                states: [State {
-                        when: mouseArea.drag.active
-                        PropertyChanges{
-                            target: idProgressPoint
-                            x: undefined
-                        }
-                    } ,
-                    State {
-                        when: !mouseArea.drag.active
-                        PropertyChanges{
-                            target: idProgressPoint
-                            x: (parent.width - width)*myPlayer.position/myPlayer.duration
+
+                states: State {
+                    when: mouseArea.drag.active
+                    PropertyChanges{
+                        target: idProgressPoint
+                        x: mouseArea.mouseX
+                        onXChanged: {
+                            myPlayer.position = myPlayer.duration*(x - idProgressBar.x)/(idProgressBar.width - width)
                         }
                     }
-                ]
+                }
+                //                   , State {
+                //                        when: !mouseArea.drag.active
+                //                        PropertyChanges{
+                //                            target: idProgressPoint
+                //                            x: (parent.width - width)*myPlayer.position/myPlayer.duration
+                //                        }
+                //                    }
             }
         }
-
-
-
 
         Rectangle {
             id: idProgressRange
@@ -58,39 +55,6 @@ Item {
             radius: 3
             color: "#877194"
         }
-        //        DropArea{
-        //            id: dragTarget
-        //            width: parent.width
-        //            height: parent.height
-        //            Rectangle {
-        //                id: idProgressPoint
-        //                x: (parent.width - width)*myPlayer.position/myPlayer.duration
-        //                width: 20
-        //                height: 12
-        //                radius: 3
-        //                color: "#2E4D5F"
-        //                onXChanged: {
-        //                    console.log("drg")
-        //                }
-
-        //                //                states: State {
-        //                //                    when: idDrag.drag.active
-        //                //                    PropertyChanges{
-        //                //                        target: idProgressPoint
-        //                //                        x: dragTarget.drag.x
-        //                //                    }
-        //                //                }
-
-        //                //                MouseArea {
-        //                //                    id: idDrag
-        //                //                    drag.target: parent
-        //                //                    drag.maximumX : idProgressBar.width - idProgressPoint.width + idProgressBar.x
-        //                //                    drag.minimumX : idProgressBar.x
-        //                //                    drag.axis: Drag.XAxis
-        //                //                    drag.active: true
-        //                //                }
-        //            }
-        //        }
     }
 
     Image{
