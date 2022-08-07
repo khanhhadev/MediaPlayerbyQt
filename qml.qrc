@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>PlayerControl.qml</file>
+        <file>image/background.jpg</file>
+        <file>image/music.png</file>
+        <file>image/play.png</file>
+        <file>image/pause.png</file>
+        <file>image/main.jpg</file>
+        <file>SongList.qml</file>
+        <file>image/add.png</file>
+        <file>image/begin.png</file>
+        <file>image/end.png</file>
+        <file>image/fastforward.png</file>
+        <file>image/folder.png</file>
+        <file>image/library.png</file>
+        <file>image/next.png</file>
+        <file>image/previous.png</file>
+        <file>MusicalArea.qml</file>
+        <file>main.qml</file>
+    </qresource>
+</RCC>
