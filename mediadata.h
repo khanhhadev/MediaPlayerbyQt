@@ -39,10 +39,13 @@ public slots:
     void onSongListChanged();
     void onCurrentIndexChanged(int currentindex);
     void onChangingDirectory(QString path);
+    void nextSong();
+//    Q_INVOKABLE void previousSong();
+
 private:
     QStringList mSongList;
     QString mDirectory;
-    int mCurrentIndex;
+    int mCurrentIndex = -1;
     QString mDataFileLocation;
 };
 

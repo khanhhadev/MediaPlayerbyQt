@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>PlayerControl.qml</file>
         <file>image/background.jpg</file>
-        <file>image/music.png</file>
         <file>image/play.png</file>
         <file>image/pause.png</file>
         <file>image/main.jpg</file>
@@ -17,5 +16,9 @@
         <file>image/previous.png</file>
         <file>MusicalArea.qml</file>
         <file>main.qml</file>
+        <file>image/mute.png</file>
+        <file>image/volume.png</file>
+        <file>ImageLib.js</file>
+        <file>image/music.png</file>
     </qresource>
 </RCC>

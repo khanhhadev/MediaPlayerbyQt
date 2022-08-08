@@ -7,14 +7,18 @@ Player::Player(QObject *parent)
 {
     connect(&(this->mMPlayer), SIGNAL(positionChanged(qint64)),
             this, SIGNAL(positionChanged(qint64)));
+
     connect(&(this->mMPlayer), SIGNAL(durationChanged(qint64)),
             this, SIGNAL(durationChanged(qint64)));
 
     connect(&(this->mMPlayer), SIGNAL(playbackStateChanged(QMediaPlayer::PlaybackState)),
             this, SLOT(isPlaying()));
 
+    connect(&(this->mMPlayer), SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
+            this, SLOT(onMediaStatusChanged()));
+
     mAudio = new QAudioOutput;
-    mAudio->setVolume(0.8);
+    mAudio->setVolume(0.5);
     mMPlayer.setAudioOutput(mAudio);
 }
 
@@ -45,6 +49,16 @@ void Player::stop()
     qDebug() << __FUNCTION__<< mMPlayer.source();
 }
 
+void Player::mute()
+{
+    setVolume(0);
+}
+
+void Player::unmute()
+{
+    setVolume(0.5);
+}
+
 bool Player::isPlaying()
 {
     return (mMPlayer.playbackState() == QMediaPlayer::PlayingState);
@@ -68,8 +82,13 @@ void Player::setPosition(const qint64 position)
 {
     if (position != mMPlayer.position())
     {
-        mMPlayer.setPosition(position);
-        emit positionChanged(mMPlayer.position());
+
+        if (position > mMPlayer.duration()) mMPlayer.setPosition(mMPlayer.duration());
+        else
+        {
+            if (position < 0) mMPlayer.setPosition(0);
+            else mMPlayer.setPosition(position);
+        }
     }
 }
 
@@ -101,6 +120,25 @@ void Player::setState(const QMediaPlayer::PlaybackState state)
     }
 }
 
+qreal Player::getVolume() const
+{
+    return mAudio->volume();
+}
+
+void Player::setVolume(const qreal volume)
+{
+    if (volume != mAudio->volume())
+    {
+        if (volume > 1) mAudio->setVolume(1);
+        else
+        {
+            if (volume < 0) mAudio->setVolume(0);
+            else mAudio->setVolume(volume);
+        }
+        emit volumeChanged();
+    }
+}
+
 qint64 Player::getDuration() const
 {
     return mMPlayer.duration();
@@ -110,5 +148,15 @@ void Player::onSourceChanged(QString songpath)
 {
     mMPlayer.setSource(songpath);
     qDebug() << __FUNCTION__ << songpath;
+}
+
+void Player::onMediaStatusChanged()
+{
+    if (mMPlayer.mediaStatus() == QMediaPlayer::EndOfMedia)
+    {
+        emit endOfSong();
+        mMPlayer.media
+        play();
+    }
 }
 

@@ -10,21 +10,25 @@
 MediaData::MediaData(QObject *parent)
     : QObject{parent}
 {
-    mDataFileLocation = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString() + "/MusicPlayer/AppData.txt";
+    mDataFileLocation = (QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/MusicPlayer");
     connect(this, &MediaData::directoryChanged,
             this, &MediaData::onDirectoryChanged);
 
     connect(this, &MediaData::currentIndexChanged,
             this, &MediaData::onCurrentIndexChanged);
-    mDirectory = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
-//    QFile FileDemo(mDataFileLocation);
-//    if (FileDemo.open(QIODevice::ReadWrite))
-//    {
-//        QByteArray line = FileDemo.readLine();
-//        if (line != "") mDirectory = line;
-//        else mDirectory = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
-//        FileDemo.close();
-//    }
+
+//    setDirectory(QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString());
+    QDir dir(mDataFileLocation);
+    if (!dir.exists())
+        dir.mkpath(".");
+    QFile FileDemo(mDataFileLocation + "/AppData.txt");
+    if (FileDemo.open(QIODevice::ReadWrite))
+    {
+        QByteArray line = FileDemo.readLine();
+        if (line != "") setDirectory(line);
+        else setDirectory(QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString());
+        FileDemo.close();
+    }
     emit directoryChanged();
     qDebug() << __FUNCTION__ << mDirectory;
     //changeDirectory();
@@ -36,8 +40,6 @@ void MediaData::getURLList(QUrl path)
     QStringList names  = directory.entryList(QStringList() << "*.mp3" << "*.mp4",QDir::Files);
     mSongList = names;
     emit songListChanged();
-    qDebug() << __FUNCTION__ << mDirectory;
-    qDebug() << __FUNCTION__ << mSongList;
 }
 
 void MediaData::setDirectory(QString dir)
@@ -57,7 +59,7 @@ QString MediaData::getDirectory() const
 void MediaData::onDirectoryChanged()
 {
     getURLList(mDirectory);
-    QFile FileDemo(mDataFileLocation);
+    QFile FileDemo(mDataFileLocation + "/AppData.txt");
     if (FileDemo.open(QIODevice::ReadWrite))
     {
         QTextStream stream(&FileDemo);
@@ -105,18 +107,34 @@ QString MediaData::getCurrentDirectory()
 
 void MediaData:: onChangingDirectory(QString path)
 {
-    mDirectory = path;
+    setDirectory(path);
     emit directoryChanged();
     qDebug() << __FUNCTION__ << mDirectory;
 }
 
+void MediaData::nextSong()
+{
+    if (mCurrentIndex < mSongList.count() - 1)
+    {
+        setCurrentIndex(mCurrentIndex+1);
+        emit sourceChanged(mDirectory + "/" + mSongList.at(mCurrentIndex));
+    }
+}
+
+//void MediaData::previousSong()
+//{    if (mCurrentIndex > 0)
+//    {
+//        setCurrentIndex(mCurrentIndex-1);
+//        emit sourceChanged(mDirectory + "/" + mSongList.at(mCurrentIndex));
+//    }
+//}
+
 void MediaData::onSongListChanged()
 {
-    qDebug() << __FUNCTION__;
+    setCurrentIndex(-1);
 }
 
 void MediaData::onCurrentIndexChanged(int currentindex)
 {
-    qDebug() << __FUNCTION__;
-    emit sourceChanged(mDirectory + "/" + mSongList.at(currentindex));
+    emit sourceChanged(mDirectory + "/" + mSongList.at(mCurrentIndex));
 }

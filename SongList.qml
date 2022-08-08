@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "ImageLib.js" as Pic
 
 //Rectangle{
 ListView {
@@ -16,11 +17,11 @@ ListView {
             color: focus? "#2E4D5F":"transparent"
             Text {
                 id: idText
-                text: modelData
-                font.pointSize: 12
+                text: " " + modelData
+                fontSizeMode: Text.Fit
                 color: parent.focus? "white" : "black"
                 elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
+                anchors.verticalCenter: parent.verticalCenter
             }
             onFocusChanged: {
                 if (!focus) idText.x = parent.x
@@ -38,10 +39,12 @@ ListView {
                 id: playArea
                 anchors.fill: parent
                 onClicked: {
-                    idListView.currentIndex = index
+                    var temp = myPlayer.state
+                    myData.currentIndex = index
+                    myPlayer.state = temp
                 }
                 onDoubleClicked: {
-                    idListView.currentIndex = index
+                    myData.currentIndex = index
                     myPlayer.play()
                 }
             }
@@ -49,10 +52,6 @@ ListView {
     }
 
     delegate: fileDelegate
-
-    onCurrentIndexChanged: {
-        myData.currentIndex = currentIndex
-    }
 
     Rectangle{
         anchors.fill: parent
@@ -73,15 +72,14 @@ ListView {
     {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        width: 40
-        height: 40
-        source: "qrc:/image/add.png"
+        width: parent.width/5
+        height: width
+        source: Pic.add
 
         MouseArea{
             anchors.fill: parent
             onClicked: {
                 mainWindow.qmlChangeDirectory(myData.directory)
-                //fileDialog.visible = true;
             }
         }
     }

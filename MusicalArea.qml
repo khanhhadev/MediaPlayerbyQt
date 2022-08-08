@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Qt.labs.platform
+import "ImageLib.js" as Pic
 
 Item {
     width: 2*parent.width/3
@@ -14,7 +15,7 @@ Item {
             id: idMusicPlay
             anchors.fill: parent
             opacity: 0.8
-            source: "qrc:/image/main.jpg"
+            source: Pic.main
             RotationAnimation{
                 target: idMusicPlay
                 loops: Animation.Infinite

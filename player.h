@@ -11,6 +11,7 @@ class Player : public QObject
     Q_PROPERTY(qint64 position READ getPosition WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(qint64 duration READ getDuration NOTIFY durationChanged)
     Q_PROPERTY(QMediaPlayer::PlaybackState state READ getState WRITE setState NOTIFY stateChanged)
+    Q_PROPERTY(qreal volume READ getVolume WRITE setVolume NOTIFY volumeChanged)
 
 public:
     explicit Player(QObject *parent = nullptr);
@@ -18,6 +19,8 @@ public:
     Q_INVOKABLE void pause();
     Q_INVOKABLE void stop();
 
+    Q_INVOKABLE void mute();
+    Q_INVOKABLE void unmute();
     qint64 getDuration() const;
 
     qint64 getPosition() const;
@@ -26,16 +29,23 @@ public:
     QMediaPlayer::PlaybackState getState();
     void setState(const QMediaPlayer::PlaybackState);
 
+    qreal getVolume() const;
+    void setVolume(const qreal volume);
+
     Q_INVOKABLE bool isPlaying();
     Q_INVOKABLE bool isPaused();
     Q_INVOKABLE bool isStopped();
+
 signals:
-//    void CurrentSongChanged(qint64 currentIndex);
     void positionChanged(qint64);
     void durationChanged(qint64);
+    void endOfSong();
     void stateChanged();
+    void volumeChanged();
+
 public slots:
     void onSourceChanged(QString);
+    void onMediaStatusChanged();
 
 private:
     QMediaPlayer mMPlayer;

@@ -38,3 +38,4 @@ HEADERS += \
     player.h
 
 DISTFILES +=
+ICON += qrc:/image/music.ico

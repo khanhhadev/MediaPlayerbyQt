@@ -3,20 +3,22 @@ import QtQuick.Window 2.12
 import QtQuick.Dialogs
 import QtQuick.Layouts
 import Qt.labs.platform
+import "ImageLib.js" as Pic
 
 
 Window {
     id: mainWindow
     signal qmlChangeDirectory(msg: string)
+
     width: 900
     height: 640
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("Media Player")
     objectName: "MainObject"
     Image {
         id: idBackground
         anchors.fill: parent
-        source: "qrc:/image/background.jpg"
+        source: Pic.background
         z: -1
     }
 
@@ -36,7 +38,7 @@ Window {
         anchors.margins: 23
         width: 170;
         spacing: 3
-        currentIndex: -1
+        currentIndex: myData.currentIndex
         model: myData.songList
     }
 

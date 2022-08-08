@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QtQuick>
 #include <QQmlContext>
@@ -18,15 +19,19 @@ int main(int argc, char *argv[])
     MediaData myData;
     Player myPlayer;
     BrowserDialog myBrowser;
-
+    app.setWindowIcon(QIcon(":/image/music.png"));
     QObject::connect(&myData, &MediaData::sourceChanged
                      ,&myPlayer, &Player::onSourceChanged);
 
     QObject::connect(&myBrowser, &BrowserDialog::changingDirectory,
                      &myData, &MediaData::onChangingDirectory);
 
+    QObject::connect(&myPlayer, &Player::endOfSong,
+                     &myData, &MediaData::nextSong);
+
     QQmlApplicationEngine engine;
     QQmlContext *appRootContext = engine.rootContext();
+
     appRootContext->setContextProperty("myData", &myData);
     appRootContext->setContextProperty("myPlayer", &myPlayer);
 
