@@ -17,152 +17,191 @@ Item {
         text: myPlayer.durationText
     }
 
-    Rectangle {
+    MSlider{
         id: idProgressBar
         anchors.top: parent.top
-        anchors.topMargin: 10
+//        anchors.topMargin: 10
         anchors.left: songPosition.right
-        anchors.leftMargin: 10
+//        anchors.leftMargin: 10
         anchors.right: songDuration.left
-        anchors.rightMargin: 10
+        anchors.margins: 10
         radius: 3
         height: 12
         clip: true
         color: "white"
+        maxValue: myPlayer.duration
+        currentValue: myPlayer.position
+        onMcurrentValueChanged: (value)=>
+                                {
+                                    myPlayer.position = value
+                                }
 
-        Rectangle {
-            id: idProgressRange
-            width: idProgressPoint.x - x + idProgressPoint.width / 2
-            height: 12
-            radius: 3
-            color: "#877194"
-        }
-
-        MouseArea {
-            id: progressArea
-            anchors.fill: parent
-            onClicked: (event) => {
-                           myPlayer.position = myPlayer.duration * (event.x)/(idProgressBar.width - idProgressPoint.width)
-                       }
-
-            Rectangle {
-                id: idProgressPoint
-                x: (idProgressBar.width - width) * myPlayer.position / myPlayer.duration
-                width: idProgressBar.width/20
-                height: 12
-                z: 1
-                radius: 3
-                color: "#2E4D5F"
-                Drag.active: progressDrag.drag.active
-                onXChanged: {
-                    if (progressDrag.drag.active) myPlayer.position = myPlayer.duration * x/(idProgressBar.width - width)
-                }
-
-                states: [State {
-                        when: progressDrag.drag.active
-                        PropertyChanges{
-                            target: idProgressPoint
-                            color: "#253E4C"
-                            x: progressDrag.x
-                        }
-                    },
-                    State {
-                        when: progressArea.released
-                        PropertyChanges{
-                            target: idProgressPoint
-                            color: "#253E4C"
-                            x: progressArea.x
-                        }
-                    }
-                ]
-
-                MouseArea {
-                    id: progressDrag
-                    anchors.fill: parent
-                    drag.target: idProgressPoint
-                    drag.axis: Drag.XAxis
-                    drag.minimumX: 0
-                    drag.maximumX: idProgressBar.width - idProgressPoint.width
-                }
-            }
-        }
     }
 
-    Rectangle {
+    //    Rectangle {
+    //        id: idProgressBar
+    //        anchors.top: parent.top
+    //        anchors.topMargin: 10
+    //        anchors.left: songPosition.right
+    //        anchors.leftMargin: 10
+    //        anchors.right: songDuration.left
+    //        anchors.rightMargin: 10
+    //        radius: 3
+    //        height: 12
+    //        clip: true
+    //        color: "white"
+
+    //        Rectangle {
+    //            id: idProgressRange
+    //            width: idProgressPoint.x - x + idProgressPoint.width / 2
+    //            height: 12
+    //            radius: 3
+    //            color: "#877194"
+    //        }
+
+    //        MouseArea {
+    //            id: progressArea
+    //            anchors.fill: parent
+    //            onClicked: (event) => {
+    //                           myPlayer.position = myPlayer.duration * (event.x)/(idProgressBar.width - idProgressPoint.width)
+    //                       }
+
+    //            Rectangle {
+    //                id: idProgressPoint
+    //                x: (idProgressBar.width - width) * myPlayer.position / myPlayer.duration
+    //                width: idProgressBar.width/20
+    //                height: 12
+    //                z: 1
+    //                radius: 3
+    //                color: "#2E4D5F"
+    //                Drag.active: progressDrag.drag.active
+    //                onXChanged: {
+    //                    if (progressDrag.drag.active) myPlayer.position = myPlayer.duration * x/(idProgressBar.width - width)
+    //                }
+
+    //                states: [State {
+    //                        when: progressDrag.drag.active
+    //                        PropertyChanges{
+    //                            target: idProgressPoint
+    //                            color: "#253E4C"
+    //                            x: progressDrag.x
+    //                        }
+    //                    },
+    //                    State {
+    //                        when: progressArea.released
+    //                        PropertyChanges{
+    //                            target: idProgressPoint
+    //                            color: "#253E4C"
+    //                            x: progressArea.x
+    //                        }
+    //                    }
+    //                ]
+
+    //                MouseArea {
+    //                    id: progressDrag
+    //                    anchors.fill: parent
+    //                    drag.target: idProgressPoint
+    //                    drag.axis: Drag.XAxis
+    //                    drag.minimumX: 0
+    //                    drag.maximumX: idProgressBar.width - idProgressPoint.width
+    //                }
+    //            }
+    //        }
+    //    }
+    MSlider{
         id: idVolumeBar
         anchors.left: idMuteBtn.right
-        anchors.right: parent.right
-        anchors.margins: 5
+        anchors.right: songDuration.right
+        anchors.margins: 3
         anchors.verticalCenter: parent.verticalCenter
         radius: 3
         height: 7
+        mheight: height*1.2
         color: "white"
-        clip: true
-
-        Rectangle {
-            id: idVolumeRange
-            width: idVolumePoint.x - x + idVolumePoint.width / 2
-            height: 7
-            radius: 3
-            color: "#877194"
-        }
-
-        MouseArea {
-            id: volumeArea
-            anchors.fill: parent
-            onClicked: (event) => {
-                           myPlayer.volume = (event.x)/ (idVolumeBar.width - idVolumePoint.width)
-                       }
-
-            Rectangle {
-                id: idVolumePoint
-                x:(idVolumeBar.width - width) * myPlayer.volume
-                width: idVolumeBar.width / 15
-                height: 12
-                z: 1
-                radius: 3
-                color: "#2E4D5F"
-                Drag.active: volumeDrag.drag.active
-                onXChanged: {
-                    if (volumeDrag.drag.active) myPlayer.volume = x / (idVolumeBar.width - width)
-                }
-
-                states: [State {
-                        when: volumeDrag.drag.active
-                        PropertyChanges{
-                            target: idVolumePoint
-                            color: "#253E4C"
-                            x: volumeDrag.x
-                        }
-                    },
-                    State {
-                        when: volumeArea.released
-                        PropertyChanges{
-                            target: idVolumePoint
-                            color: "#253E4C"
-                            x: volumeArea.x
-                        }
-                    }
-                ]
-
-                MouseArea {
-                    id: volumeDrag
-                    anchors.fill: parent
-                    drag.target: idVolumePoint
-                    drag.axis: Drag.XAxis
-                    drag.minimumX : 0
-                    drag.maximumX: idVolumeBar.width - idVolumePoint.width
-                }
-            }
-        }
+//        clip: true
+        maxValue: 1
+        currentValue: myPlayer.volume
+        onMcurrentValueChanged: (value)=>
+                                {
+                                    myPlayer.volume = value
+                                }
     }
+
+    //    Rectangle {
+    //        id: idVolumeBar
+    //        anchors.left: idMuteBtn.right
+    //        anchors.right: parent.right
+    //        anchors.margins: 5
+    //        anchors.verticalCenter: parent.verticalCenter
+    //        radius: 3
+    //        height: 7
+    //        color: "white"
+    //        clip: true
+
+    //        Rectangle {
+    //            id: idVolumeRange
+    //            width: idVolumePoint.x - x + idVolumePoint.width / 2
+    //            height: 7
+    //            radius: 3
+    //            color: "#877194"
+    //        }
+
+    //        MouseArea {
+    //            id: volumeArea
+    //            anchors.fill: parent
+    //            onClicked: (event) => {
+    //                           myPlayer.volume = (event.x)/ (idVolumeBar.width - idVolumePoint.width)
+    //                       }
+
+    //            Rectangle {
+    //                id: idVolumePoint
+    //                x:(idVolumeBar.width - width) * myPlayer.volume
+    //                width: idVolumeBar.width / 15
+    //                height: 12
+    //                z: 1
+    //                radius: 3
+    //                color: "#2E4D5F"
+    //                Drag.active: volumeDrag.drag.active
+    //                onXChanged: {
+    //                    if (volumeDrag.drag.active) myPlayer.volume = x / (idVolumeBar.width - width)
+    //                }
+
+    //                states: [State {
+    //                        when: volumeDrag.drag.active
+    //                        PropertyChanges{
+    //                            target: idVolumePoint
+    //                            color: "#253E4C"
+    //                            x: volumeDrag.x
+    //                        }
+    //                    },
+    //                    State {
+    //                        when: volumeArea.released
+    //                        PropertyChanges{
+    //                            target: idVolumePoint
+    //                            color: "#253E4C"
+    //                            x: volumeArea.x
+    //                        }
+    //                    }
+    //                ]
+
+    //                MouseArea {
+    //                    id: volumeDrag
+    //                    anchors.fill: parent
+    //                    drag.target: idVolumePoint
+    //                    drag.axis: Drag.XAxis
+    //                    drag.minimumX : 0
+    //                    drag.maximumX: idVolumeBar.width - idVolumePoint.width
+    //                }
+    //            }
+    //        }
+    //    }
     Rectangle{
         id: idcontrolArea
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        width: idControlBtn.width * 3
+        width: idControlBtn.width * 4
         height: parent.height/3
-        radius: height/2
+        radius: height/3*2
         border.color: "#2E4D5F"
         color: "white"
         Image{
@@ -170,7 +209,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             enabled: (idListView.count === 0)? false : true;
-//            width: parent.height
+            width: parent.height
             height: width
             source: (myPlayer.state === 1)? Pic.pause : Pic.play
             MouseArea {
@@ -185,7 +224,7 @@ Item {
 
             Rectangle{
                 anchors.centerIn: parent
-                width: parent.width * 1.5
+                width: parent.width * 1.3
                 height: width
                 radius: width/2
                 z: -1
@@ -248,14 +287,13 @@ Item {
             }
         }
     }
+
     Image{
         id: idMuteBtn
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: idcontrolArea.right
-        anchors.leftMargin: idcontrolArea.height
-        //        anchors.right: parent.right
-        //        anchors.rightMargin: 2*idNextBtn.width
-        width: 2*idcontrolArea.height/3
+        anchors.leftMargin: idcontrolArea.height/2
+        width: idcontrolArea.height/2
         height: width
         source: (myPlayer.volume === 0)? Pic.mute :Pic.volume
         MouseArea {

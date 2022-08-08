@@ -25,6 +25,7 @@ QML_DESIGNER_IMPORT_PATH += \
         PlayerControl.qml \
         ProgressBar.qml \
         MusicalArea.qml \
+        MSlider.qml \
         main.qml
 
 # Default rules for deployment.

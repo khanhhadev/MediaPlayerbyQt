@@ -27,7 +27,13 @@ Item {
                 direction: RotationAnimation.Counterclockwise
                 running: (myPlayer.state === 1)? true: false
             }
-
+            RotationAnimation{
+                id: coverArtreturn
+                target: idMusicPlay
+                to: 0
+                direction: RotationAnimation.Counterclockwise
+                running: (myPlayer.state === 2)? true: false
+            }
         }
     Rectangle{
         radius: 5

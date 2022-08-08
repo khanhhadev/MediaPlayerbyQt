@@ -20,5 +20,6 @@
         <file>image/volume.png</file>
         <file>ImageLib.js</file>
         <file>image/music.png</file>
+        <file>MSlider.qml</file>
     </qresource>
 </RCC>

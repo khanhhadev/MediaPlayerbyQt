@@ -16,18 +16,6 @@ Window {
     title: qsTr("Media Player")
     objectName: "MainObject"
 
-//    Component{
-//        id: idcom
-//        property int v
-//        Rectangle{
-//            width: 100
-//            height: 100
-//        }
-//    }
-//    Loader{
-//        sourceComponent: idcom
-//    }
-
     Image {
         id: idBackground
         anchors.fill: parent
