@@ -1,6 +1,8 @@
 #include "player.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QImage>
+#include <QMediaMetaData>
 
 Player::Player(QObject *parent)
     : QObject{parent}
@@ -59,6 +61,28 @@ void Player::unmute()
     setVolume(0.5);
 }
 
+QString Player::getDurationText()
+{
+    long long int dura = getDuration();
+    long long int ms = dura % 1000;
+    long long int s = (dura /= 1000)%60;
+    long long int m = (dura /= 60)/60;
+    long long int h = dura;
+//    qDebug() << __FUNCTION__ << getDuration() << QTime(h, m, s, ms).toString("hh:mm:ss");
+    return QTime(h, m, s, ms).toString("hh:mm:ss");
+}
+
+QString Player::getPositionText()
+{
+    long long int posi = getPosition();
+    long long int ms = posi % 1000;
+    long long int s = (posi /= 1000)%60;
+    long long int m = (posi /= 60)/60;
+    long long int h = posi;
+//    qDebug() << __FUNCTION__ << getPosition() << QTime(h, m, s, ms).toString("hh:mm:ss");
+    return QTime(h, m, s, ms).toString("hh:mm:ss");
+}
+
 bool Player::isPlaying()
 {
     return (mMPlayer.playbackState() == QMediaPlayer::PlayingState);
@@ -72,6 +96,16 @@ bool Player::isPaused()
 bool Player::isStopped()
 {
     return (mMPlayer.playbackState() == QMediaPlayer::StoppedState);
+}
+
+void Player::getSongCover()
+{
+    QMediaMetaData songData = mMPlayer.metaData();
+    QImage mImage(songData[QMediaMetaData::CoverArtImage].value<QImage>());
+
+
+    //    painter->drawImage(0,0, mImage);
+    //    painter->setOpacity(1);
 }
 
 qint64 Player::getPosition() const
@@ -155,7 +189,6 @@ void Player::onMediaStatusChanged()
     if (mMPlayer.mediaStatus() == QMediaPlayer::EndOfMedia)
     {
         emit endOfSong();
-        mMPlayer.media
         play();
     }
 }

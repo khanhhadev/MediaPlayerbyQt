@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     MediaData myData;
     Player myPlayer;
+
     BrowserDialog myBrowser;
     app.setWindowIcon(QIcon(":/image/music.png"));
     QObject::connect(&myData, &MediaData::sourceChanged

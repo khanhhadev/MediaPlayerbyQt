@@ -10,23 +10,21 @@
 MediaData::MediaData(QObject *parent)
     : QObject{parent}
 {
-    mDataFileLocation = (QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/MusicPlayer");
+
     connect(this, &MediaData::directoryChanged,
             this, &MediaData::onDirectoryChanged);
 
     connect(this, &MediaData::currentIndexChanged,
             this, &MediaData::onCurrentIndexChanged);
 
-//    setDirectory(QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString());
     QDir dir(mDataFileLocation);
-    if (!dir.exists())
-        dir.mkpath(".");
+    if (!dir.exists()) dir.mkpath(".");
     QFile FileDemo(mDataFileLocation + "/AppData.txt");
     if (FileDemo.open(QIODevice::ReadWrite))
     {
         QByteArray line = FileDemo.readLine();
         if (line != "") setDirectory(line);
-        else setDirectory(QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString());
+        else setDirectory(mDataFileLocation);
         FileDemo.close();
     }
     emit directoryChanged();
@@ -37,9 +35,12 @@ MediaData::MediaData(QObject *parent)
 void MediaData::getURLList(QUrl path)
 {
     QDir directory(path.toLocalFile());
-    QStringList names  = directory.entryList(QStringList() << "*.mp3" << "*.mp4",QDir::Files);
-    mSongList = names;
-    emit songListChanged();
+    QStringList names  = directory.entryList(QStringList() << "*.mp3" /*<< "*.mp4"*/,QDir::Files);
+    if (mSongList != names)
+    {
+        mSongList = names;
+        emit songListChanged();
+    }
 }
 
 void MediaData::setDirectory(QString dir)
@@ -121,20 +122,12 @@ void MediaData::nextSong()
     }
 }
 
-//void MediaData::previousSong()
-//{    if (mCurrentIndex > 0)
-//    {
-//        setCurrentIndex(mCurrentIndex-1);
-//        emit sourceChanged(mDirectory + "/" + mSongList.at(mCurrentIndex));
-//    }
-//}
-
 void MediaData::onSongListChanged()
 {
     setCurrentIndex(-1);
 }
 
-void MediaData::onCurrentIndexChanged(int currentindex)
+void MediaData::onCurrentIndexChanged()
 {
     emit sourceChanged(mDirectory + "/" + mSongList.at(mCurrentIndex));
 }

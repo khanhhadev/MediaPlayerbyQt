@@ -37,7 +37,7 @@ signals:
 public slots:
     void onDirectoryChanged();
     void onSongListChanged();
-    void onCurrentIndexChanged(int currentindex);
+    void onCurrentIndexChanged();
     void onChangingDirectory(QString path);
     void nextSong();
 //    Q_INVOKABLE void previousSong();
@@ -46,7 +46,7 @@ private:
     QStringList mSongList;
     QString mDirectory;
     int mCurrentIndex = -1;
-    QString mDataFileLocation;
+    QString mDataFileLocation = (QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/MusicPlayer");
 };
 
 #endif // MEDIADATA_H

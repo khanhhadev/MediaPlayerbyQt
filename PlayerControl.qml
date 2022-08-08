@@ -3,11 +3,28 @@ import QtMultimedia
 import "ImageLib.js" as Pic
 
 Item {
+    Text{
+        id: songPosition
+        anchors.verticalCenter: idProgressBar.verticalCenter
+        anchors.left: parent.left
+        text: myPlayer.positionText
+    }
+
+    Text{
+        id: songDuration
+        anchors.verticalCenter: idProgressBar.verticalCenter
+        anchors.right: parent.right
+        text: myPlayer.durationText
+    }
+
     Rectangle {
         id: idProgressBar
         anchors.top: parent.top
         anchors.topMargin: 10
-        implicitWidth: parent.width
+        anchors.left: songPosition.right
+        anchors.leftMargin: 10
+        anchors.right: songDuration.left
+        anchors.rightMargin: 10
         radius: 3
         height: 12
         clip: true
@@ -42,22 +59,22 @@ Item {
                 }
 
                 states: [State {
-                    when: progressDrag.drag.active
-                    PropertyChanges{
-                        target: idProgressPoint
-                        color: "#253E4C"
-                        x: progressDrag.x
+                        when: progressDrag.drag.active
+                        PropertyChanges{
+                            target: idProgressPoint
+                            color: "#253E4C"
+                            x: progressDrag.x
+                        }
+                    },
+                    State {
+                        when: progressArea.released
+                        PropertyChanges{
+                            target: idProgressPoint
+                            color: "#253E4C"
+                            x: progressArea.x
+                        }
                     }
-                },
-                State {
-                    when: progressArea.released
-                    PropertyChanges{
-                        target: idProgressPoint
-                        color: "#253E4C"
-                        x: progressArea.x
-                    }
-                }
-            ]
+                ]
 
                 MouseArea {
                     id: progressDrag
@@ -70,7 +87,6 @@ Item {
             }
         }
     }
-
 
     Rectangle {
         id: idVolumeBar
@@ -140,88 +156,106 @@ Item {
             }
         }
     }
-
-    Image{
-        id: idControlBtn
+    Rectangle{
+        id: idcontrolArea
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        enabled: (idListView.count === 0)? false:true;
-        opacity: (idListView.count === 0)? 0.5 : 1;
-        width: parent.height/4
-        height: width
-        source: (myPlayer.state === 1)? Pic.pause : Pic.play
-        MouseArea {
-            id: idPlayPause
-            anchors.fill: parent
-            onClicked: {
-                if (myPlayer.isPlaying()) myPlayer.pause()
-                else myPlayer.play()
-                console.log((myPlayer.state === 1));
+        width: idControlBtn.width * 3
+        height: parent.height/3
+        radius: height/2
+        border.color: "#2E4D5F"
+        color: "white"
+        Image{
+            id: idControlBtn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            enabled: (idListView.count === 0)? false : true;
+//            width: parent.height
+            height: width
+            source: (myPlayer.state === 1)? Pic.pause : Pic.play
+            MouseArea {
+                id: idPlayPause
+                anchors.fill: parent
+                onClicked: {
+                    if (myPlayer.isPlaying()) myPlayer.pause()
+                    else myPlayer.play()
+                    console.log((myPlayer.state === 1));
+                }
+            }
+
+            Rectangle{
+                anchors.centerIn: parent
+                width: parent.width * 1.5
+                height: width
+                radius: width/2
+                z: -1
+                border.color: "#2E4D5F"
+                color: "white"
             }
         }
-    }
 
-    Image{
-        id: idNextBtn
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: idControlBtn.right
-        anchors.margins: 30
-        opacity: (idListView.count === 0)? 0.5 : 1;
-        width: parent.height/4
-        height: width
-        source: Pic.next
-        MouseArea {
-            id: idNext
-            anchors.fill: parent
-            onClicked: {
-                if (idListView.currentIndex < idListView.count - 1)
-                {
-                    var temp = myPlayer.state
-                    myData.currentIndex++;
-                    myPlayer.state = temp
-                } else
-                {
-                    myPlayer.stop()
-                    myPlayer.position = myPlayer.duration
+        Image{
+            id: idNextBtn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: idControlBtn.right
+            anchors.margins: idControlBtn.height/2
+            enabled: (idListView.count === 0)? false : true;
+            width: 2*parent.height/3
+            height: width
+            source: Pic.next
+            MouseArea {
+                id: idNext
+                anchors.fill: parent
+                onClicked: {
+                    if (idListView.currentIndex < idListView.count - 1)
+                    {
+                        var temp = myPlayer.state
+                        myData.currentIndex++;
+                        myPlayer.state = temp
+                    } else
+                    {
+                        myPlayer.stop()
+                        myPlayer.position = myPlayer.duration
+                    }
+                }
+            }
+        }
+
+        Image{
+            id: idPreviousBtn
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: idControlBtn.left
+            anchors.margins: idControlBtn.height/2
+            enabled: (idListView.count === 0)? false : true;
+            width: 2*parent.height/3
+            height: width
+            source: Pic.previous
+            MouseArea {
+                id: idPrevious
+                anchors.fill: parent
+                onClicked: {
+                    if (idListView.currentIndex > 0)
+                    {
+                        var temp = myPlayer.state
+                        myData.currentIndex--;
+                        myPlayer.state = temp
+                    } else
+                    {
+                        myPlayer.position = 0
+                        myPlayer.stop()
+                    }
                 }
             }
         }
     }
-
-    Image{
-        id: idPreviousBtn
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: idControlBtn.left
-        anchors.margins: 30
-        opacity: (idListView.count === 0)? 0.5 : 1;
-        width: parent.height/4
-        height: width
-        source: Pic.previous
-        MouseArea {
-            id: idPrevious
-            anchors.fill: parent
-            onClicked: {
-                if (idListView.currentIndex > 0)
-                {
-                    var temp = myPlayer.state
-                    myData.currentIndex--;
-                    myPlayer.state = temp
-                } else
-                {
-                    myPlayer.position = 0
-                    myPlayer.stop()
-                }
-            }
-        }
-    }
-
     Image{
         id: idMuteBtn
         anchors.verticalCenter: parent.verticalCenter
-        anchors.left: idNextBtn.right
-        anchors.leftMargin: idNextBtn.width
-        anchors.right: parent.right
-        anchors.rightMargin: 2*idNextBtn.width
+        anchors.left: idcontrolArea.right
+        anchors.leftMargin: idcontrolArea.height
+        //        anchors.right: parent.right
+        //        anchors.rightMargin: 2*idNextBtn.width
+        width: 2*idcontrolArea.height/3
         height: width
         source: (myPlayer.volume === 0)? Pic.mute :Pic.volume
         MouseArea {
@@ -234,5 +268,6 @@ Item {
         }
 
     }
+
 
 }

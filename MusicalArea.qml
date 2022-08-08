@@ -11,11 +11,13 @@ Item {
         height: width
         radius: width/2
         clip: true
+
         Image {
             id: idMusicPlay
             anchors.fill: parent
             opacity: 0.8
             source: Pic.main
+            }
             RotationAnimation{
                 target: idMusicPlay
                 loops: Animation.Infinite
@@ -27,7 +29,6 @@ Item {
             }
 
         }
-    }
     Rectangle{
         radius: 5
         opacity: 0.6
