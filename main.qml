@@ -16,6 +16,7 @@ Window {
     title: qsTr("Media Player")
     objectName: "MainObject"
 
+    //back ground
     Image {
         id: idBackground
         anchors.fill: parent
@@ -30,6 +31,7 @@ Window {
         anchors.margins: 15
     }
 
+    //containing playlist
     SongList{
         id: idListView
         anchors.left: idMusicalArea.right
@@ -43,6 +45,7 @@ Window {
         model: myData.songList
     }
 
+    //containing media control buttons
     PlayerControl{
         id: idMediaControl
         anchors.fill: parent.horizontal

@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import "ImageLib.js" as Pic
 
-//Rectangle{
 ListView {
     signal qmlChangeDirectory()
     Component {
@@ -11,10 +10,10 @@ ListView {
             height: 35
             implicitWidth: idListView.width
             radius: 3
-            border.color: focus? "white":"#2E4D5F"
+            border.color: focus? "white" : "#2E4D5F"
             opacity: 1
             clip: true
-            color: focus? "#2E4D5F":"transparent"
+            color: focus? "#2E4D5F" : "transparent"
             Text {
                 id: idText
                 text: " " + modelData
@@ -26,6 +25,8 @@ ListView {
             onFocusChanged: {
                 if (!focus) idText.x = parent.x
             }
+
+            //text moving animation
             NumberAnimation{
                 properties: "x"
                 target: idText
@@ -84,4 +85,3 @@ ListView {
         }
     }
 }
-//}

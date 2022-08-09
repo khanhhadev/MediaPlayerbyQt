@@ -12,10 +12,10 @@ BrowserDialog::BrowserDialog(QWidget *parentW, QObject *parent)
 
 }
 
+//open browser dialog to select folder
 void BrowserDialog::changeDirectory(QString directory)
 {
     mBrowser.setDirectoryUrl(QUrl::fromLocalFile(directory));
     mBrowser.exec();
     emit changingDirectory(mBrowser.directoryUrl().toString());
-    qDebug() <<__FUNCTION__<< mBrowser.directoryUrl().toString();
 }

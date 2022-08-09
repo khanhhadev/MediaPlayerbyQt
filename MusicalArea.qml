@@ -5,6 +5,7 @@ import "ImageLib.js" as Pic
 Item {
     width: 2*parent.width/3
     height: 2*parent.height/3
+
     Rectangle {
         anchors.centerIn: parent;
         width: parent.width/3
@@ -17,24 +18,27 @@ Item {
             anchors.fill: parent
             opacity: 0.8
             source: Pic.main
-            }
-            RotationAnimation{
-                target: idMusicPlay
-                loops: Animation.Infinite
-                from: 0
-                to: -360
-                duration: 15000;
-                direction: RotationAnimation.Counterclockwise
-                running: (myPlayer.state === 1)? true: false
-            }
-            RotationAnimation{
-                id: coverArtreturn
-                target: idMusicPlay
-                to: 0
-                direction: RotationAnimation.Counterclockwise
-                running: (myPlayer.state === 2)? true: false
-            }
         }
+
+        RotationAnimation{
+            target: idMusicPlay
+            loops: Animation.Infinite
+            from: 0
+            to: -360
+            duration: 15000;
+            direction: RotationAnimation.Counterclockwise
+            running: (myPlayer.state === 1)? true: false
+        }
+
+        RotationAnimation{
+            id: coverArtreturn
+            target: idMusicPlay
+            to: 0
+            direction: RotationAnimation.Counterclockwise
+            running: (myPlayer.state === 0)? true: false
+        }
+    }
+
     Rectangle{
         radius: 5
         opacity: 0.6

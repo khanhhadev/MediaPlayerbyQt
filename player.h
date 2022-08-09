@@ -1,10 +1,12 @@
+/***********************************************
+*THIS CLASS IS USED MANAGE MEDIA PLAYER & AUDIO OBJECT
+************************************************/
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include <QObject>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include <QTime>
 
 class Player : public QObject
 {
@@ -15,6 +17,9 @@ class Player : public QObject
     Q_PROPERTY(qint64 duration READ getDuration NOTIFY durationChanged)
     Q_PROPERTY(QString positionText READ getPositionText NOTIFY positionChanged)
     Q_PROPERTY(QString durationText READ getDurationText NOTIFY durationChanged)
+    Q_PROPERTY(bool muted READ muted WRITE setMuted NOTIFY mutedChanged)
+    Q_PROPERTY(QStringList songInfor READ getSongInfor WRITE setSongInfor NOTIFY songInforChanged)
+
 public:
     explicit Player(QObject *parent = nullptr);
 
@@ -28,7 +33,6 @@ public:
     Q_INVOKABLE bool isPlaying();
     Q_INVOKABLE bool isPaused();
     Q_INVOKABLE bool isStopped();
-    Q_INVOKABLE void getSongCover();
 
     QString getDurationText();
     QString getPositionText();
@@ -44,6 +48,8 @@ public:
     qreal getVolume() const;
     void setVolume(const qreal volume);
 
+    bool muted() const;
+    void setMuted(const bool muted);
 
 signals:
     void positionChanged(qint64);
@@ -51,10 +57,12 @@ signals:
     void endOfSong();
     void stateChanged();
     void volumeChanged();
-
+    void mutedChanged();
+    void songInforChanged();
 public slots:
     void onSourceChanged(QString);
     void onMediaStatusChanged();
+    void onEndOfList();
 
 private:
     QMediaPlayer mMPlayer;

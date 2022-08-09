@@ -1,8 +1,7 @@
 #include "player.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include <QImage>
-#include <QMediaMetaData>
+#include <QTime>
 
 Player::Player(QObject *parent)
     : QObject{parent}
@@ -24,43 +23,46 @@ Player::Player(QObject *parent)
     mMPlayer.setAudioOutput(mAudio);
 }
 
+//set media player to play mode
 void Player::play()
 {
     if (!mMPlayer.source().isEmpty())
     {
         mMPlayer.play();
         emit stateChanged();
-        qDebug() << __FUNCTION__ << mMPlayer.source();
     }
 }
 
+//set media player to pause mode
 void Player::pause()
 {
     if (mMPlayer.playbackState() == QMediaPlayer::PlayingState)
     {
         mMPlayer.pause();
         emit stateChanged();
-        qDebug() << __FUNCTION__<< mMPlayer.source();
     }
 }
 
+//set media player to stop mode
 void Player::stop()
 {
     mMPlayer.stop();
     emit stateChanged();
-    qDebug() << __FUNCTION__<< mMPlayer.source();
 }
 
+//set mute to audio
 void Player::mute()
 {
-    setVolume(0);
+    setMuted(true);
 }
 
+//set unmute to audio
 void Player::unmute()
 {
-    setVolume(0.5);
+    setMuted(false);
 }
 
+//return song duration by text
 QString Player::getDurationText()
 {
     long long int dura = getDuration();
@@ -68,10 +70,10 @@ QString Player::getDurationText()
     long long int s = (dura /= 1000)%60;
     long long int m = (dura /= 60)/60;
     long long int h = dura;
-//    qDebug() << __FUNCTION__ << getDuration() << QTime(h, m, s, ms).toString("hh:mm:ss");
     return QTime(h, m, s, ms).toString("hh:mm:ss");
 }
 
+//return song position by text
 QString Player::getPositionText()
 {
     long long int posi = getPosition();
@@ -79,7 +81,6 @@ QString Player::getPositionText()
     long long int s = (posi /= 1000)%60;
     long long int m = (posi /= 60)/60;
     long long int h = posi;
-//    qDebug() << __FUNCTION__ << getPosition() << QTime(h, m, s, ms).toString("hh:mm:ss");
     return QTime(h, m, s, ms).toString("hh:mm:ss");
 }
 
@@ -98,20 +99,11 @@ bool Player::isStopped()
     return (mMPlayer.playbackState() == QMediaPlayer::StoppedState);
 }
 
-void Player::getSongCover()
-{
-    QMediaMetaData songData = mMPlayer.metaData();
-    QImage mImage(songData[QMediaMetaData::CoverArtImage].value<QImage>());
-
-
-    //    painter->drawImage(0,0, mImage);
-    //    painter->setOpacity(1);
-}
-
 qint64 Player::getPosition() const
 {
     return mMPlayer.position();
 }
+
 void Player::setPosition(const qint64 position)
 {
     if (position != mMPlayer.position())
@@ -150,7 +142,6 @@ void Player::setState(const QMediaPlayer::PlaybackState state)
             break;
         }
         emit stateChanged();
-        qDebug() << __FUNCTION__<< mMPlayer.source();
     }
 }
 
@@ -173,6 +164,17 @@ void Player::setVolume(const qreal volume)
     }
 }
 
+bool Player::muted() const
+{
+    return mAudio->isMuted();
+}
+
+void Player::setMuted(const bool muted)
+{
+    mAudio->setMuted(muted);
+    emit mutedChanged();
+}
+
 qint64 Player::getDuration() const
 {
     return mMPlayer.duration();
@@ -181,7 +183,7 @@ qint64 Player::getDuration() const
 void Player::onSourceChanged(QString songpath)
 {
     mMPlayer.setSource(songpath);
-    qDebug() << __FUNCTION__ << songpath;
+    emit songInforChanged();
 }
 
 void Player::onMediaStatusChanged()
@@ -191,5 +193,10 @@ void Player::onMediaStatusChanged()
         emit endOfSong();
         play();
     }
+}
+
+void Player::onEndOfList()
+{
+    stop();
 }
 

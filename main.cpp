@@ -18,9 +18,10 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     MediaData myData;
     Player myPlayer;
-
     BrowserDialog myBrowser;
+
     app.setWindowIcon(QIcon(":/image/music.png"));
+
     QObject::connect(&myData, &MediaData::sourceChanged
                      ,&myPlayer, &Player::onSourceChanged);
 
@@ -29,6 +30,9 @@ int main(int argc, char *argv[])
 
     QObject::connect(&myPlayer, &Player::endOfSong,
                      &myData, &MediaData::nextSong);
+
+    QObject::connect(&myData, &MediaData::endOfList
+                     ,&myPlayer, &Player::onEndOfList);
 
     QQmlApplicationEngine engine;
     QQmlContext *appRootContext = engine.rootContext();
@@ -45,6 +49,7 @@ int main(int argc, char *argv[])
 
     engine.load(url);
     QObject *object = engine.rootObjects().at(0);
+
     QObject::connect(object, SIGNAL(qmlChangeDirectory(QString))
                      , &myBrowser ,SLOT(changeDirectory(QString)));
 

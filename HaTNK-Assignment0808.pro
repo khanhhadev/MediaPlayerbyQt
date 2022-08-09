@@ -11,6 +11,7 @@ QT += \
 SOURCES += \
         browserdialog.cpp \
         main.cpp \
+        mediacontrol.cpp \
         mediadata.cpp \
         player.cpp
 
@@ -35,8 +36,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     browserdialog.h \
+    mediacontrol.h \
     mediadata.h \
     player.h
 
 DISTFILES +=
-ICON += qrc:/image/music.ico

@@ -3,6 +3,8 @@ import QtMultimedia
 import "ImageLib.js" as Pic
 
 Item {
+
+    //current playing time
     Text{
         id: songPosition
         anchors.verticalCenter: idProgressBar.verticalCenter
@@ -10,6 +12,7 @@ Item {
         text: myPlayer.positionText
     }
 
+    //total time of song
     Text{
         id: songDuration
         anchors.verticalCenter: idProgressBar.verticalCenter
@@ -17,12 +20,11 @@ Item {
         text: myPlayer.durationText
     }
 
+    //song progress display
     MSlider{
         id: idProgressBar
         anchors.top: parent.top
-//        anchors.topMargin: 10
         anchors.left: songPosition.right
-//        anchors.leftMargin: 10
         anchors.right: songDuration.left
         anchors.margins: 10
         radius: 3
@@ -31,83 +33,13 @@ Item {
         color: "white"
         maxValue: myPlayer.duration
         currentValue: myPlayer.position
-        onMcurrentValueChanged: (value)=>
-                                {
+        onMcurrentValueChanged: (value)=> {
                                     myPlayer.position = value
-                                }
 
+                                }
     }
 
-    //    Rectangle {
-    //        id: idProgressBar
-    //        anchors.top: parent.top
-    //        anchors.topMargin: 10
-    //        anchors.left: songPosition.right
-    //        anchors.leftMargin: 10
-    //        anchors.right: songDuration.left
-    //        anchors.rightMargin: 10
-    //        radius: 3
-    //        height: 12
-    //        clip: true
-    //        color: "white"
-
-    //        Rectangle {
-    //            id: idProgressRange
-    //            width: idProgressPoint.x - x + idProgressPoint.width / 2
-    //            height: 12
-    //            radius: 3
-    //            color: "#877194"
-    //        }
-
-    //        MouseArea {
-    //            id: progressArea
-    //            anchors.fill: parent
-    //            onClicked: (event) => {
-    //                           myPlayer.position = myPlayer.duration * (event.x)/(idProgressBar.width - idProgressPoint.width)
-    //                       }
-
-    //            Rectangle {
-    //                id: idProgressPoint
-    //                x: (idProgressBar.width - width) * myPlayer.position / myPlayer.duration
-    //                width: idProgressBar.width/20
-    //                height: 12
-    //                z: 1
-    //                radius: 3
-    //                color: "#2E4D5F"
-    //                Drag.active: progressDrag.drag.active
-    //                onXChanged: {
-    //                    if (progressDrag.drag.active) myPlayer.position = myPlayer.duration * x/(idProgressBar.width - width)
-    //                }
-
-    //                states: [State {
-    //                        when: progressDrag.drag.active
-    //                        PropertyChanges{
-    //                            target: idProgressPoint
-    //                            color: "#253E4C"
-    //                            x: progressDrag.x
-    //                        }
-    //                    },
-    //                    State {
-    //                        when: progressArea.released
-    //                        PropertyChanges{
-    //                            target: idProgressPoint
-    //                            color: "#253E4C"
-    //                            x: progressArea.x
-    //                        }
-    //                    }
-    //                ]
-
-    //                MouseArea {
-    //                    id: progressDrag
-    //                    anchors.fill: parent
-    //                    drag.target: idProgressPoint
-    //                    drag.axis: Drag.XAxis
-    //                    drag.minimumX: 0
-    //                    drag.maximumX: idProgressBar.width - idProgressPoint.width
-    //                }
-    //            }
-    //        }
-    //    }
+    //volume display
     MSlider{
         id: idVolumeBar
         anchors.left: idMuteBtn.right
@@ -118,83 +50,37 @@ Item {
         height: 7
         mheight: height*1.2
         color: "white"
-//        clip: true
+        clip: true
         maxValue: 1
         currentValue: myPlayer.volume
-        onMcurrentValueChanged: (value)=>
-                                {
+        onMcurrentValueChanged: (value)=> {
                                     myPlayer.volume = value
                                 }
     }
 
-    //    Rectangle {
-    //        id: idVolumeBar
-    //        anchors.left: idMuteBtn.right
-    //        anchors.right: parent.right
-    //        anchors.margins: 5
-    //        anchors.verticalCenter: parent.verticalCenter
-    //        radius: 3
-    //        height: 7
-    //        color: "white"
-    //        clip: true
+    //mute/unmute button
+    Image{
+        id: idMuteBtn
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: idcontrolArea.right
+        anchors.leftMargin: idcontrolArea.height/2
+        width: idcontrolArea.height/2
+        height: width
+        property bool mute: (myPlayer.volume === 0)||(myPlayer.muted)
+        source: mute? Pic.mute : Pic.volume
+        MouseArea {
+            id: idMute
+            anchors.fill: parent
+            onClicked: {
+                if (parent.mute) myPlayer.unmute()
+                else myPlayer.mute()
+                parent.mute != parent.mute
+            }
+        }
 
-    //        Rectangle {
-    //            id: idVolumeRange
-    //            width: idVolumePoint.x - x + idVolumePoint.width / 2
-    //            height: 7
-    //            radius: 3
-    //            color: "#877194"
-    //        }
+    }
 
-    //        MouseArea {
-    //            id: volumeArea
-    //            anchors.fill: parent
-    //            onClicked: (event) => {
-    //                           myPlayer.volume = (event.x)/ (idVolumeBar.width - idVolumePoint.width)
-    //                       }
 
-    //            Rectangle {
-    //                id: idVolumePoint
-    //                x:(idVolumeBar.width - width) * myPlayer.volume
-    //                width: idVolumeBar.width / 15
-    //                height: 12
-    //                z: 1
-    //                radius: 3
-    //                color: "#2E4D5F"
-    //                Drag.active: volumeDrag.drag.active
-    //                onXChanged: {
-    //                    if (volumeDrag.drag.active) myPlayer.volume = x / (idVolumeBar.width - width)
-    //                }
-
-    //                states: [State {
-    //                        when: volumeDrag.drag.active
-    //                        PropertyChanges{
-    //                            target: idVolumePoint
-    //                            color: "#253E4C"
-    //                            x: volumeDrag.x
-    //                        }
-    //                    },
-    //                    State {
-    //                        when: volumeArea.released
-    //                        PropertyChanges{
-    //                            target: idVolumePoint
-    //                            color: "#253E4C"
-    //                            x: volumeArea.x
-    //                        }
-    //                    }
-    //                ]
-
-    //                MouseArea {
-    //                    id: volumeDrag
-    //                    anchors.fill: parent
-    //                    drag.target: idVolumePoint
-    //                    drag.axis: Drag.XAxis
-    //                    drag.minimumX : 0
-    //                    drag.maximumX: idVolumeBar.width - idVolumePoint.width
-    //                }
-    //            }
-    //        }
-    //    }
     Rectangle{
         id: idcontrolArea
         anchors.verticalCenter: parent.verticalCenter
@@ -204,6 +90,8 @@ Item {
         radius: height/3*2
         border.color: "#2E4D5F"
         color: "white"
+
+        //play/pause button
         Image{
             id: idControlBtn
             anchors.verticalCenter: parent.verticalCenter
@@ -211,15 +99,16 @@ Item {
             enabled: (idListView.count === 0)? false : true;
             width: parent.height
             height: width
-            source: (myPlayer.state === 1)? Pic.pause : Pic.play
+            property bool playing: (myPlayer.state === 1)
+            source: playing? Pic.pause : Pic.play
             MouseArea {
                 id: idPlayPause
                 anchors.fill: parent
                 onClicked: {
                     if (myPlayer.isPlaying()) myPlayer.pause()
                     else myPlayer.play()
-                    console.log((myPlayer.state === 1));
                 }
+
             }
 
             Rectangle{
@@ -233,6 +122,7 @@ Item {
             }
         }
 
+        //next button
         Image{
             id: idNextBtn
             anchors.verticalCenter: parent.verticalCenter
@@ -260,6 +150,7 @@ Item {
             }
         }
 
+        //previous button
         Image{
             id: idPreviousBtn
             anchors.verticalCenter: parent.verticalCenter
@@ -287,25 +178,4 @@ Item {
             }
         }
     }
-
-    Image{
-        id: idMuteBtn
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: idcontrolArea.right
-        anchors.leftMargin: idcontrolArea.height/2
-        width: idcontrolArea.height/2
-        height: width
-        source: (myPlayer.volume === 0)? Pic.mute :Pic.volume
-        MouseArea {
-            id: idMute
-            anchors.fill: parent
-            onClicked: {
-                if (parent.source == Pic.mute) myPlayer.unmute()
-                else myPlayer.mute()
-            }
-        }
-
-    }
-
-
 }

@@ -1,26 +1,15 @@
 import QtQuick 2.0
 
-
+//slider design for Progress & Volume display
 Rectangle {
-    //    id: idSlider
-    //    anchors.top: parent.top
-    //    anchors.topMargin: 10
-    //    anchors.left: songPosition.right
-    //    anchors.leftMargin: 10
-    //    anchors.right: songDuration.left
-    //    anchors.rightMargin: 10
-    //    radius: 3
-    //    height: 12
-    //    clip: true
-    //    color: "white"
     id: idSlider
     property real maxValue
     property real currentValue
     property real mheight
     property real mwidth
-//    property alias g
     signal mcurrentValueChanged(real value)
-    Component.onCompleted: console.log(x, idProgressPoint.x);
+    signal dragActive(bool active)
+
     Rectangle {
         id: idProgressRange
         width: idProgressPoint.x - x + idProgressPoint.width / 2
@@ -34,7 +23,6 @@ Rectangle {
         anchors.fill: parent
         onClicked: (event) => {
                        mcurrentValueChanged(maxValue * (event.x)/(idSlider.width - idProgressPoint.width))
-                       console.log(currentValue, maxValue);
                    }
 
         Rectangle {
@@ -47,10 +35,8 @@ Rectangle {
             color: "#2E4D5F"
             Drag.active: progressDrag.drag.active
             onXChanged: {
-                console.log(idSlider.x,idProgressPoint.x)
                 if (progressDrag.drag.active) mcurrentValueChanged(maxValue * idProgressPoint.x/(idSlider.width - idProgressPoint.width))
             }
-
             states: [State {
                     when: progressDrag.drag.active
                     PropertyChanges{

@@ -1,3 +1,7 @@
+/***********************************************
+*THIS CLASS IS USED MANAGE PLAY LIST
+************************************************/
+
 #ifndef MEDIADATA_H
 #define MEDIADATA_H
 
@@ -15,23 +19,26 @@ class MediaData : public QObject
 public:
     explicit MediaData(QObject *parent = nullptr);
 
+    //get list of song from directory path
     void getURLList(QUrl dir);
 
+    //mDirectory READ-WRITE function
     void setDirectory(const QString dir);
     QString getDirectory() const;
 
+    //mSongList READ-WRITE function
     void setSongList(const QStringList newSongList);
     QStringList getSongList() const;
 
+    //mcurrentIndex READ-WRITE function
     int getCurrentIndex() const;
     void setCurrentIndex(const int currenIndex);
-
-    Q_INVOKABLE QString getCurrentDirectory();
 
 signals:
     void directoryChanged();
     void songListChanged();
     void sourceChanged(QString path);
+    void endOfList();
     void currentIndexChanged(int currentindex);
 
 public slots:
@@ -40,13 +47,16 @@ public slots:
     void onCurrentIndexChanged();
     void onChangingDirectory(QString path);
     void nextSong();
-//    Q_INVOKABLE void previousSong();
 
 private:
     QStringList mSongList;
     QString mDirectory;
-    int mCurrentIndex = -1;
-    QString mDataFileLocation = (QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/MusicPlayer");
+    int mCurrentIndex;
+    const QString mDataFileLocation = (QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/MusicPlayer");
+
+    //get-set mDirectory backup to AppData.txt file
+    void readBackup();
+    void writeBackup();
 };
 
 #endif // MEDIADATA_H
