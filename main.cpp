@@ -4,6 +4,8 @@
 #include <QtQuick>
 #include <QQmlContext>
 #include <QFileDialog>
+#include <QThread>
+
 #include "mediacontrol.h"
 
 int main(int argc, char *argv[])
@@ -18,9 +20,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     QQmlContext *appRootContext = engine.rootContext();
-
-//    appRootContext->setContextProperty("myData", &myData);
-//    appRootContext->setContextProperty("myPlayer", &myPlayer);
+    appRootContext->setContextProperty("myControl", &myControl);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
     engine.load(url);
     QObject *object = engine.rootObjects().at(0);
 
-        QObject::connect(object, SIGNAL(qmlChangeDirectory())
-                         , &myControl ,SLOT(onChangingDirectory()));
+    QObject::connect(object, SIGNAL(qmlChangeDirectory())
+                     , &myControl ,SLOT(onChangingDirectory()));
 
     return app.exec();
 }

@@ -60,12 +60,10 @@ bool MediaDataList::setData(const QModelIndex &index, const QVariant &value, int
     Q_UNUSED(role);
 }
 
-QModelIndex MediaDataList::index(int row, int column, const QModelIndex &parent) const
-{
-    Q_UNUSED(row);
-    Q_UNUSED(column);
-    Q_UNUSED(parent);
-}
+//QModelIndex MediaDataList::index(int row, int column, const QModelIndex &parent) const
+//{
+//    return QModelIndex(inde)
+//}
 
 void MediaDataList::addNewFolder(const QUrl directorypath)
 {
@@ -80,6 +78,11 @@ void MediaDataList::addNewFolder(const QUrl directorypath)
     }
     emit songListChanged();
 }
+
+//MediaDataItem MediaDataList::at(int row, int role)
+//{
+//    return mData.at(index(row).row());
+//}
 
 QHash<int, QByteArray> MediaDataList::roleNames() const
 {

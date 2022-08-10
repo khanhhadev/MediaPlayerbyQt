@@ -11,13 +11,6 @@
 class Player : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QMediaPlayer::PlaybackState state READ getState WRITE setState NOTIFY stateChanged)
-    Q_PROPERTY(qreal volume READ getVolume WRITE setVolume NOTIFY volumeChanged)
-    Q_PROPERTY(qint64 position READ getPosition WRITE setPosition NOTIFY positionChanged)
-    Q_PROPERTY(qint64 duration READ getDuration NOTIFY durationChanged)
-    Q_PROPERTY(QString positionText READ getPositionText NOTIFY positionChanged)
-    Q_PROPERTY(QString durationText READ getDurationText NOTIFY durationChanged)
-    Q_PROPERTY(bool muted READ muted WRITE setMuted NOTIFY mutedChanged)
     Q_PROPERTY(QStringList songInfor READ getSongInfor WRITE setSongInfor NOTIFY songInforChanged)
 
 public:

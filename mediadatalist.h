@@ -50,8 +50,9 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+    //QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
     void addNewFolder(const QUrl directorypath);
+    MediaDataItem at(int row, int role);
 
 protected:
     QHash<int, QByteArray> roleNames() const override ;
