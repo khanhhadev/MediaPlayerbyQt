@@ -175,15 +175,14 @@ void Player::setMuted(const bool muted)
     emit mutedChanged();
 }
 
+void Player::setSource(QString source)
+{
+    mMPlayer.setSource(source);
+}
+
 qint64 Player::getDuration() const
 {
     return mMPlayer.duration();
-}
-
-void Player::onSourceChanged(QString songpath)
-{
-    mMPlayer.setSource(songpath);
-    emit songInforChanged();
 }
 
 void Player::onMediaStatusChanged()
@@ -191,12 +190,6 @@ void Player::onMediaStatusChanged()
     if (mMPlayer.mediaStatus() == QMediaPlayer::EndOfMedia)
     {
         emit endOfSong();
-        play();
     }
-}
-
-void Player::onEndOfList()
-{
-    stop();
 }
 

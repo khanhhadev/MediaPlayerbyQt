@@ -17,5 +17,5 @@ void BrowserDialog::changeDirectory(QString directory)
 {
     mBrowser.setDirectoryUrl(QUrl::fromLocalFile(directory));
     mBrowser.exec();
-    emit changingDirectory(mBrowser.directoryUrl().toString());
+    emit directoryChanged(mBrowser.directoryUrl().toString());
 }

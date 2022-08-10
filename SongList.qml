@@ -80,7 +80,7 @@ ListView {
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                mainWindow.qmlChangeDirectory(myData.directory)
+                mainWindow.qmlChangeDirectory()
             }
         }
     }

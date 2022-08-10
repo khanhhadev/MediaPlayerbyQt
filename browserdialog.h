@@ -21,7 +21,7 @@ private:
     QFileDialog mBrowser;
 
 signals:
-    void changingDirectory(QString path);
+    void directoryChanged(QString path);
 
 public slots:
     void changeDirectory(QString directory);

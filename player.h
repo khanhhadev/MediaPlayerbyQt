@@ -51,6 +51,8 @@ public:
     bool muted() const;
     void setMuted(const bool muted);
 
+    void setSource(QString source);
+
 signals:
     void positionChanged(qint64);
     void durationChanged(qint64);
@@ -59,10 +61,9 @@ signals:
     void volumeChanged();
     void mutedChanged();
     void songInforChanged();
+
 public slots:
-    void onSourceChanged(QString);
     void onMediaStatusChanged();
-    void onEndOfList();
 
 private:
     QMediaPlayer mMPlayer;

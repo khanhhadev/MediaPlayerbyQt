@@ -12,7 +12,7 @@ SOURCES += \
         browserdialog.cpp \
         main.cpp \
         mediacontrol.cpp \
-        mediadata.cpp \
+        mediadatalist.cpp \
         player.cpp
 
 RESOURCES += qml.qrc
@@ -37,7 +37,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     browserdialog.h \
     mediacontrol.h \
-    mediadata.h \
+    mediadatalist.h \
     player.h
 
 DISTFILES +=

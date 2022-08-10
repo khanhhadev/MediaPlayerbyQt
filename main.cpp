@@ -4,10 +4,7 @@
 #include <QtQuick>
 #include <QQmlContext>
 #include <QFileDialog>
-
-#include "mediadata.h"
-#include "player.h"
-#include "browserdialog.h"
+#include "mediacontrol.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,29 +13,14 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
-    MediaData myData;
-    Player myPlayer;
-    BrowserDialog myBrowser;
-
+    MediaControl myControl;
     app.setWindowIcon(QIcon(":/image/music.png"));
-
-    QObject::connect(&myData, &MediaData::sourceChanged
-                     ,&myPlayer, &Player::onSourceChanged);
-
-    QObject::connect(&myBrowser, &BrowserDialog::changingDirectory,
-                     &myData, &MediaData::onChangingDirectory);
-
-    QObject::connect(&myPlayer, &Player::endOfSong,
-                     &myData, &MediaData::nextSong);
-
-    QObject::connect(&myData, &MediaData::endOfList
-                     ,&myPlayer, &Player::onEndOfList);
 
     QQmlApplicationEngine engine;
     QQmlContext *appRootContext = engine.rootContext();
 
-    appRootContext->setContextProperty("myData", &myData);
-    appRootContext->setContextProperty("myPlayer", &myPlayer);
+//    appRootContext->setContextProperty("myData", &myData);
+//    appRootContext->setContextProperty("myPlayer", &myPlayer);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -50,8 +32,8 @@ int main(int argc, char *argv[])
     engine.load(url);
     QObject *object = engine.rootObjects().at(0);
 
-    QObject::connect(object, SIGNAL(qmlChangeDirectory(QString))
-                     , &myBrowser ,SLOT(changeDirectory(QString)));
+        QObject::connect(object, SIGNAL(qmlChangeDirectory())
+                         , &myControl ,SLOT(onChangingDirectory()));
 
     return app.exec();
 }
