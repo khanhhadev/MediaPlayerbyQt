@@ -14,28 +14,63 @@
 #include <QMediaMetaData>
 #include <QDateTime>
 
-struct MediaDataItem {
-    MediaDataItem(QString fileSource) : source(fileSource)
-    {
-        QMediaPlayer* mTemp = new QMediaPlayer;
-        mTemp->setSource(source);
-        QMediaMetaData songContext = mTemp->metaData();
-        name = songContext.stringValue(QMediaMetaData::Title);
-        album = songContext.stringValue(QMediaMetaData::AlbumTitle);
-        artist = songContext.stringValue(QMediaMetaData::ContributingArtist);
-        date = songContext.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
-    }
-    QString source, name, album, artist, date;
-};
-
 
 enum Roles {
-    ModelDataRole = Qt::UserRole+1,
-    SourceRole,
+    SourceRole = Qt::UserRole+1,
     NameRole,
     AlbumTitleRole,
     ContributingArtistRole,
     DateRole
+};
+
+struct MediaDataItem {
+    MediaDataItem(QString fileSource, QString fileName) : source(fileSource), name(fileName)
+    {
+//        QMediaPlayer mTemp;
+//        mTemp.setSource(source);
+//        if (mTemp.isAvailable())
+//        {
+//            QMediaMetaData songContext = mTemp.metaData();
+//            //name = songContext.stringValue(QMediaMetaData::Title);
+//            album = songContext.stringValue(QMediaMetaData::AlbumTitle);
+//            artist = songContext.stringValue(QMediaMetaData::ContributingArtist);
+//            date = songContext.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
+//            qDebug() << __FUNCTION__ << source << name << album << artist << date;
+//        }
+//        qDebug() << __FUNCTION__ << source << name << album << artist << date;
+    }
+
+    QString getValue(int role) const
+    {
+        switch (role)
+        {
+        case Roles::SourceRole:
+            return source;
+            break;
+        case Roles::NameRole:
+            return name;
+            break;
+        case Roles::AlbumTitleRole:
+            return album;
+            break;
+        case Roles::ContributingArtistRole:
+            return artist;
+            break;
+        case Roles::DateRole:
+            return date;
+            break;
+        default:
+            return "";
+        }
+    }
+    bool operator==(const MediaDataItem& item)
+    {
+        return (source == item.source)&&(name == item.name)
+                && (album == item.album) && (artist == item.artist)
+                && (date == item.date);
+    }
+private:
+    QString source, name, album, artist, date;
 };
 
 class MediaDataList : public QAbstractListModel
@@ -43,17 +78,18 @@ class MediaDataList : public QAbstractListModel
     Q_OBJECT
 public:
     explicit MediaDataList(QObject *parent = nullptr);
-    MediaDataList(const MediaDataList& data);
-    virtual ~MediaDataList();
 
     int count() const;
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    //QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
-    void addNewFolder(const QUrl directorypath);
-    MediaDataItem at(int row, int role);
+    void addNewFiles(const MediaDataItem &file);
+    void addNewFiles(const QList<MediaDataItem> &list);
+    MediaDataItem at(int row);
+    void clear();
 
+
+
+    //    friend QDebug& operator<<(QDebug& output, const MediaDataList& list);
 protected:
     QHash<int, QByteArray> roleNames() const override ;
 
@@ -63,13 +99,13 @@ signals:
 public slots:
 
 private:
-//    QString m_RootFolder;
+    //    QString m_RootFolder;
     QList<MediaDataItem> mData;
     QHash<int, QByteArray> mRoleNames;
-
 };
 
 #endif // MEDIADATALIST_H
+
 //    Q_PROPERTY(QStringList songList READ getSongList WRITE setSongList NOTIFY songListChanged)
 //    Q_PROPERTY(QString directory READ getDirectory WRITE setDirectory NOTIFY directoryChanged)
 //    Q_PROPERTY(int currentIndex READ getCurrentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)

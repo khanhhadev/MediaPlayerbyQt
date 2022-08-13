@@ -1,19 +1,28 @@
 #include "mediacontrol.h"
 
 #include "mediadatalist.h"
-#include "player.h"
 #include "browserdialog.h"
 
-MediaControl::MediaControl(QObject *parent)
-    : QObject{parent}, mCurrentIndex(-1)
+MediaControl::MediaControl(Player *player, MediaDataList* songlist, QObject *parent)
+    : QObject{parent}, myPlayer(player), myData(songlist), mCurrentIndex(-1)
+{
+    makeConnect();
+    readBackup();
+}
+
+void MediaControl::makeConnect()
 {
     QObject::connect(&myBrowser, &BrowserDialog::directoryChanged,
-                     this, &MediaControl::onChangingDirectory);
+                     this, &MediaControl::onDirectoryChanged);
 
-    QObject::connect(&myPlayer, &Player::endOfSong,
+    QObject::connect(this->myPlayer, &Player::endOfSong,
                      this, &MediaControl::onEndOfSong);
 
-    readBackup();
+    QObject::connect(this, &MediaControl::listEnded,
+                     this, &MediaControl::onListEnded);
+
+    QObject::connect(this, &MediaControl::sourceChanged,
+                     this->myPlayer, &Player::onSourceChanged);
 }
 
 void MediaControl::setDirectory(const QString dir)
@@ -30,16 +39,6 @@ QString MediaControl::getDirectory() const
     return mDirectory;
 }
 
-void MediaControl::setSongListModel(const MediaDataList newSongList)
-{
-
-}
-
-MediaDataList MediaControl::getSongListModel() const
-{
-    return myData;
-}
-
 int MediaControl::getCurrentIndex() const
 {
     return mCurrentIndex;
@@ -54,16 +53,27 @@ void MediaControl::setCurrentIndex(const int currentIndex)
     }
 }
 
+void MediaControl::selectSong(int index)
+{
+    setCurrentIndex(index);
+    if (mCurrentIndex >= 0)
+    {
+        myPlayer->setSource(myData->at(mCurrentIndex).getValue(Roles::SourceRole));
+    }
+}
+
 void MediaControl::nextSong()
 {
-    if (mCurrentIndex < myData.count() - 1)
+    if (mCurrentIndex < myData->count() - 1)
     {
-        QMediaPlayer::PlaybackState temp = myPlayer.getState();
+        QMediaPlayer::PlaybackState temp = myPlayer->getState();
         setCurrentIndex(mCurrentIndex + 1);
-        myPlayer.setState(temp);
+        myPlayer->setSource(myData->at(mCurrentIndex).getValue(Roles::SourceRole));
+        myPlayer->setState(temp);
     } else {
-        myPlayer.stop();
-        myPlayer.setPosition(myPlayer.getDuration());
+        emit listEnded();
+        //        myPlayer->stop();
+        //        myPlayer->setPosition(myPlayer->getDuration());
     }
 }
 
@@ -71,44 +81,75 @@ void MediaControl::previousSong()
 {
     if (mCurrentIndex > 0)
     {
-        QMediaPlayer::PlaybackState temp = myPlayer.getState();
+        QMediaPlayer::PlaybackState temp = myPlayer->getState();
         setCurrentIndex(mCurrentIndex - 1);
-        myPlayer.setState(temp);
+        myPlayer->setSource(myData->at(mCurrentIndex).getValue(Roles::SourceRole));
+        myPlayer->setState(temp);
     } else {
-        myPlayer.stop();
-        myPlayer.setPosition(0);
+        myPlayer->stop();
+        myPlayer->setPosition(0);
     }
 }
 
-void MediaControl::directoryChanged()
+void MediaControl::playpause()
 {
-    myData.addNewFolder(mDirectory);
-    setCurrentIndex(-1);
-    writeBackup();
+    if(myPlayer->getState() == QMediaPlayer::PlayingState) myPlayer->pause();
+    else myPlayer->play();
 }
 
-void MediaControl::onChangingDirectory(QString path)
+void MediaControl::changeMute()
 {
-    Q_UNUSED(path);
+    if (myPlayer->muted()) myPlayer->unmute();
+    else myPlayer->mute();
+}
+
+void MediaControl::changeRepeat()
+{
+    if (myPlayer->repeat()) myPlayer->setRepeat(false);
+    else myPlayer->setRepeat(true);
+}
+
+void MediaControl::onDirectoryChanged(QString path, QList<MediaDataItem> newlist)
+{
+    setDirectory(path);
+    myData->addNewFiles(newlist);
+    setCurrentIndex(-1);
+    writeBackup();
+    qDebug() << __FUNCTION__ << myData->count();
+}
+
+void MediaControl::changeDirectory()
+{
+    myData->clear();
     myBrowser.changeDirectory(mDirectory);
+}
+
+void MediaControl::addFiles()
+{
+    myBrowser.addFiles(mDirectory);
+}
+
+void MediaControl::onListEnded()
+{
+    myPlayer->stop();
+    myPlayer->setPosition(myPlayer->getDuration());
 }
 
 void MediaControl::onEndOfSong()
 {
-    if (mCurrentIndex < myData.count() - 1)
+    if (mCurrentIndex < myData->count() - 1)
     {
         setCurrentIndex(mCurrentIndex + 1);
-        myPlayer.play();
+        myPlayer->setSource(myData->at(mCurrentIndex).getValue(Roles::SourceRole));
+        myPlayer->play();
     } else {
-        myPlayer.stop();
-        myPlayer.setPosition(myPlayer.getDuration());
+        emit listEnded();
     }
 }
-
 void MediaControl::onCurrentIndexChanged()
 {
     if (mCurrentIndex != -1)
-        myPlayer.setSource(myData.data(myData.index(mCurrentIndex), Roles::SourceRole).toString());
+        emit sourceChanged(myData->at(mCurrentIndex).getValue(Roles::SourceRole));
 }
 
 void MediaControl::readBackup()

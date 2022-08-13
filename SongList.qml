@@ -14,9 +14,17 @@ ListView {
             opacity: 1
             clip: true
             color: focus? "#2E4D5F" : "transparent"
+            states: State{
+                when: idRect.focus
+                PropertyChanges {
+                    target: idRect
+                    border.color: "white"
+                    height: 70
+                }
+            }
             Text {
                 id: idText
-                text: " " + modelData
+                text: " " + name
                 fontSizeMode: Text.Fit
                 color: parent.focus? "white" : "black"
                 elide: Text.ElideRight
@@ -40,13 +48,14 @@ ListView {
                 id: playArea
                 anchors.fill: parent
                 onClicked: {
-                    var temp = myPlayer.state
-                    myData.currentIndex = index
-                    myPlayer.state = temp
+                    myControl.selectSong(index);
                 }
                 onDoubleClicked: {
-                    myData.currentIndex = index
-                    myPlayer.play()
+                    myControl.selectSong(index);
+                    myControl.playpause()
+                }
+                onEntered: {
+                    idRect.state = 'entering'
                 }
             }
         }
@@ -71,8 +80,27 @@ ListView {
 
     Image
     {
+        id: openFolder
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        width: parent.width/5
+        height: width
+        source: Pic.folder
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                myControl.changeDirectory();
+            }
+        }
+    }
+
+    Image
+    {
+        id: addSong
+        anchors.bottom: parent.bottom
+        anchors.right: openFolder.left
+        anchors.rightMargin: 10
         width: parent.width/5
         height: width
         source: Pic.add
@@ -80,7 +108,7 @@ ListView {
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                mainWindow.qmlChangeDirectory()
+                myControl.addFiles();
             }
         }
     }

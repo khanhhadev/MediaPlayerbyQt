@@ -1,6 +1,7 @@
 #include "player.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QMediaMetaData>
 #include <QTime>
 
 Player::Player(QObject *parent)
@@ -17,6 +18,7 @@ Player::Player(QObject *parent)
 
     connect(&(this->mMPlayer), SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             this, SLOT(onMediaStatusChanged()));
+
 
     mAudio = new QAudioOutput;
     mAudio->setVolume(0.5);
@@ -175,10 +177,32 @@ void Player::setMuted(const bool muted)
     emit mutedChanged();
 }
 
+bool Player::repeat() const
+{
+    return (mMPlayer.loops() < 0);
+}
+
+void Player::setRepeat(const bool repeat)
+{
+    if (repeat) {
+        mMPlayer.setLoops(QMediaPlayer::Infinite);
+    } else {
+        mMPlayer.setLoops(QMediaPlayer::Once);
+    }
+    emit repeatChanged();
+    qDebug() << mMPlayer.loops();
+}
+
 void Player::setSource(QString source)
 {
     mMPlayer.setSource(source);
 }
+
+QStringList Player::getCurrentSong() const
+{
+    return mCurrentSong;
+}
+
 
 qint64 Player::getDuration() const
 {
@@ -191,5 +215,21 @@ void Player::onMediaStatusChanged()
     {
         emit endOfSong();
     }
+    if (mMPlayer.mediaStatus() == QMediaPlayer::LoadedMedia)
+    {
+        QMediaMetaData songcontent = mMPlayer.metaData();
+
+//        mCurrentSong[0] = mMPlayer.source().toString();
+//        mCurrentSong[1] = songcontent.stringValue(QMediaMetaData::Title);
+//        mCurrentSong[2] = songcontent.stringValue(QMediaMetaData::AlbumTitle);
+//        mCurrentSong[3] = songcontent.stringValue(QMediaMetaData::ContributingArtist);
+//        mCurrentSong[4] = songcontent.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
+//        emit currentSongChanged();
+    }
+}
+
+void Player::onSourceChanged(QString source)
+{
+     setSource(source);
 }
 

@@ -21,5 +21,7 @@
         <file>ImageLib.js</file>
         <file>image/music.png</file>
         <file>MSlider.qml</file>
+        <file>image/repeat.png</file>
+        <file>image/shuffle.png</file>
     </qresource>
 </RCC>

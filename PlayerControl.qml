@@ -72,14 +72,58 @@ Item {
             id: idMute
             anchors.fill: parent
             onClicked: {
-                if (parent.mute) myPlayer.unmute()
-                else myPlayer.mute()
-                parent.mute != parent.mute
+                myControl.changeMute()
             }
         }
 
     }
 
+    Image{
+        id: idRepeatBtn
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: idcontrolArea.left
+        anchors.rightMargin: idcontrolArea.height/2
+        width: 2*idcontrolArea.height/3
+        height: width
+        source: Pic.repeat
+        MouseArea {
+            id: idRepeat
+            anchors.fill: parent
+            onClicked: {
+                myControl.changeRepeat()
+            }
+        }
+        Rectangle{
+            implicitHeight: parent.height
+            implicitWidth: parent.width
+            radius: 5
+            color: "transparent"
+            border.color: myPlayer.repeat? "#2E4D5F" : "transparent"
+        }
+    }
+
+    Image{
+        id: idShuffleBtn
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: idRepeatBtn.left
+        anchors.rightMargin: idcontrolArea.height/2
+        width: 2*idcontrolArea.height/3
+        height: width
+        source: Pic.shuffle
+        MouseArea {
+            id: idShuffle
+            anchors.fill: parent
+            onClicked: {
+//                myControl.changeMute()
+            }
+        }
+        Rectangle{
+            implicitHeight: parent.height
+            implicitWidth: parent.width
+            color: "transparent"
+//            border.color: repeat? "#2E4D5F" : "transparent"
+        }
+    }
 
     Rectangle{
         id: idcontrolArea
@@ -105,8 +149,7 @@ Item {
                 id: idPlayPause
                 anchors.fill: parent
                 onClicked: {
-                    if (myPlayer.isPlaying()) myPlayer.pause()
-                    else myPlayer.play()
+                    myControl.playpause()
                 }
 
             }
@@ -136,16 +179,7 @@ Item {
                 id: idNext
                 anchors.fill: parent
                 onClicked: {
-                    if (idListView.currentIndex < idListView.count - 1)
-                    {
-                        var temp = myPlayer.state
-                        myData.currentIndex++;
-                        myPlayer.state = temp
-                    } else
-                    {
-                        myPlayer.stop()
-                        myPlayer.position = myPlayer.duration
-                    }
+                    myControl.nextSong()
                 }
             }
         }
@@ -166,13 +200,7 @@ Item {
                 onClicked: {
                     if (idListView.currentIndex > 0)
                     {
-                        var temp = myPlayer.state
-                        myData.currentIndex--;
-                        myPlayer.state = temp
-                    } else
-                    {
-                        myPlayer.position = 0
-                        myPlayer.stop()
+                        myControl.previousSong()
                     }
                 }
             }

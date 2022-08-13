@@ -5,8 +5,11 @@
 #include <QQmlContext>
 #include <QFileDialog>
 #include <QThread>
+#include <QTranslator>
 
 #include "mediacontrol.h"
+#include "player.h"
+#include "mediadatalist.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,12 +18,17 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
-    MediaControl myControl;
+    QTranslator translator;
+    MediaDataList myData;
+    Player myPlayer;
+    MediaControl myControl(&myPlayer, &myData);
     app.setWindowIcon(QIcon(":/image/music.png"));
 
     QQmlApplicationEngine engine;
     QQmlContext *appRootContext = engine.rootContext();
     appRootContext->setContextProperty("myControl", &myControl);
+    appRootContext->setContextProperty("myPlayer", &myPlayer);
+    appRootContext->setContextProperty("myData", &myData);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -31,9 +39,6 @@ int main(int argc, char *argv[])
 
     engine.load(url);
     QObject *object = engine.rootObjects().at(0);
-
-    QObject::connect(object, SIGNAL(qmlChangeDirectory())
-                     , &myControl ,SLOT(onChangingDirectory()));
 
     return app.exec();
 }

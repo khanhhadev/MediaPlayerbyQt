@@ -14,5 +14,9 @@ var play = "qrc:/image/play.png"
 var pause = "qrc:/image/pause.png"
 var main = "qrc:/image/main.jpg"
 var fastfoward = "qrc:/image/fastfoward.png"
+var repeat = "qrc:/image/repeat.png"
+var shuffle = "qrc:/image/shuffle.png"
+//var repeat = "qrc:/image/repeat.png"
+//var repeat = "qrc:/image/repeat.png"
 
 

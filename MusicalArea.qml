@@ -2,7 +2,12 @@ import QtQuick 2.0
 import Qt.labs.platform
 import "ImageLib.js" as Pic
 
-Item {
+
+Rectangle{
+    radius: 5
+    opacity: 0.6
+    color: "white"
+    z: -1
     width: 2*parent.width/3
     height: 2*parent.height/3
 
@@ -15,7 +20,10 @@ Item {
 
         Image {
             id: idMusicPlay
-            anchors.fill: parent
+            width: parent.width
+            height: width
+//            anchors.fill: parent
+            anchors.centerIn: parent;
             opacity: 0.8
             source: Pic.main
         }
@@ -37,15 +45,6 @@ Item {
             direction: RotationAnimation.Counterclockwise
             running: (myPlayer.state === 0)? true: false
         }
-    }
-
-    Rectangle{
-        radius: 5
-        opacity: 0.6
-        color: "white"
-        z: -1
-        implicitHeight: parent.height
-        implicitWidth: parent.width
     }
 
 }

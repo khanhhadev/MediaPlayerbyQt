@@ -6,18 +6,16 @@
 #include <QFile>
 #include <QStandardPaths>
 #include <QIODevice>
-#include <QStandardPaths>
-#include <QUrl>
 
 
 MediaDataList::MediaDataList(QObject *parent)
     : QAbstractListModel(parent)
 {
-}
-
-MediaDataList::MediaDataList(const MediaDataList& data): mData(data.mData), mRoleNames(data.mRoleNames)
-{
-
+    mRoleNames[SourceRole] = "source";
+    mRoleNames[NameRole] = "name";
+    mRoleNames[AlbumTitleRole] = "album";
+    mRoleNames[ContributingArtistRole] = "artist";
+    mRoleNames[DateRole] = "date";
 }
 
 int MediaDataList::count() const
@@ -35,64 +33,62 @@ QVariant MediaDataList::data(const QModelIndex &index, int role) const
 {
 
     if(index.isValid() == false) return QVariant();
-    if(index.row() < 0 || index.row() >= count()) return QVariant();
-    switch (role) {
-    case Qt::DisplayRole:
-    case SourceRole:
-        return mData.at(index.row()).source;
-    case NameRole:
-        return mData.at(index.row()).name;
-    case AlbumTitleRole:
-        return mData.at(index.row()).album;
-    case ContributingArtistRole:
-        return mData.at(index.row()).artist;
-    case DateRole:
-        return mData.at(index.row()).date;
-    default:
-        return QVariant();
-    }
+    //if(index.row() < 0 || index.row() >= count()) return QVariant();
+    qDebug() << __FUNCTION__ << mData.at(index.row()).getValue(role);
+    return mData.at(index.row()).getValue(role);
+
 }
 
-bool MediaDataList::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    Q_UNUSED(index);
-    Q_UNUSED(value);
-    Q_UNUSED(role);
-}
-
-//QModelIndex MediaDataList::index(int row, int column, const QModelIndex &parent) const
+//QModelIndex MediaDataList::index(int row, int column = 0, const QModelIndex &parent) const
 //{
-//    return QModelIndex(inde)
+//    return QModelIndex(index);
 //}
 
-void MediaDataList::addNewFolder(const QUrl directorypath)
+//void MediaDataList::addNewFolder(const QUrl directorypath)
+//{
+
+//    emit songListChanged();
+//    qDebug() << __FUNCTION__ << directorypath << sourcelist;
+//}
+
+void MediaDataList::addNewFiles(const MediaDataItem &file)
 {
-    QDir directory(directorypath.toLocalFile());
-    QStringList sourcelist  = directory.entryList(QStringList() << "*.wav" << "*.mid" << "*.aif" << "*.mp3",QDir::Files);
-    for (QString song: sourcelist)
+    auto itr = std::find(mData.begin(), mData.end(), file);
+    if (itr == mData.end())
     {
-        beginInsertRows(QModelIndex(), rowCount(), rowCount());
-        mData.append(MediaDataItem(song));
+        beginInsertRows(QModelIndex(), count(), count());
+        mData.append(file);
         endInsertRows();
-
     }
-    emit songListChanged();
 }
 
-//MediaDataItem MediaDataList::at(int row, int role)
-//{
-//    return mData.at(index(row).row());
-//}
+void MediaDataList::addNewFiles(const QList<MediaDataItem> &list)
+{
+    for (MediaDataItem item : list)
+    {
+        addNewFiles(item);
+    }
+}
+
+MediaDataItem MediaDataList::at(int row)
+{
+    return mData.at(row);
+}
+
+void MediaDataList::clear()
+{
+    while (count() > 0)
+    {
+        beginRemoveRows(QModelIndex(), 0, 0);
+        mData.removeAt(0);
+        endRemoveRows();
+    }
+}
 
 QHash<int, QByteArray> MediaDataList::roleNames() const
 {
-
-    QHash<int, QByteArray> roles;
-    roles[ModelDataRole] = "modelData";
-    return roles;
+    return mRoleNames;
 }
-
-
 
 //MediaDataList::MediaDataList(QObject *parent)
 //    : QObject{parent}

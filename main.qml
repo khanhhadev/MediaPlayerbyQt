@@ -8,7 +8,7 @@ import "ImageLib.js" as Pic
 
 Window {
     id: mainWindow
-    signal qmlChangeDirectory(msg: string)
+    signal qmlChangeDirectory()
 
     width: 900
     height: 640
@@ -35,14 +35,17 @@ Window {
     SongList{
         id: idListView
         anchors.left: idMusicalArea.right
+        anchors.leftMargin: 23
         anchors.right: parent.right
+        anchors.rightMargin: 23
         anchors.top: parent.top
+        anchors.topMargin: 23
         anchors.bottom: parent.bottom
-        anchors.margins: 23
+        anchors.bottomMargin: 23
         width: 170;
         spacing: 3
-        currentIndex: myData.currentIndex
-        model: myData.songList
+        currentIndex: myControl.currentIndex
+        model: myData
     }
 
     //containing media control buttons
