@@ -23,6 +23,7 @@ Item {
     //song progress display
     MSlider{
         id: idProgressBar
+//        dragAreaLabel: qsTr(myPlayer.positionText)
         anchors.top: parent.top
         anchors.left: songPosition.right
         anchors.right: songDuration.left
@@ -37,11 +38,17 @@ Item {
                                     myPlayer.position = value
 
                                 }
+//        MouseLabel{
+//            mouseID: parent.dragAreaID
+//            mouseLabel: qsTr(myPlayer.positionText)
+//            z:1
+//        }
     }
 
     //volume display
     MSlider{
         id: idVolumeBar
+//        dragAreaLabel: myPlayer.volume*100 + "%"
         anchors.left: idMuteBtn.right
         anchors.right: songDuration.right
         anchors.margins: 3
@@ -56,6 +63,11 @@ Item {
         onMcurrentValueChanged: (value)=> {
                                     myPlayer.volume = value
                                 }
+//        MouseLabel{
+//            mouseID: parent.dragAreaID
+//            mouseLabel: myPlayer.volume*100 + "%"
+//            z:1
+//        }
     }
 
     //mute/unmute button
@@ -68,11 +80,18 @@ Item {
         height: width
         property bool mute: (myPlayer.volume === 0)||(myPlayer.muted)
         source: mute? Pic.mute : Pic.volume
+
+        MouseLabel{
+            mouseID: idMute
+            mouseLabel: parent.mute? qsTr("Unmute") : qsTr("Mute")
+        }
+
         MouseArea {
             id: idMute
             anchors.fill: parent
+            hoverEnabled: true
             onClicked: {
-                myControl.changeMute()
+                qmlchangeMute()
             }
         }
 
@@ -89,10 +108,17 @@ Item {
         MouseArea {
             id: idRepeat
             anchors.fill: parent
+            hoverEnabled: true
             onClicked: {
-                myControl.changeRepeat()
+                qmlchangeRepeat()
             }
         }
+
+        MouseLabel{
+            mouseID: idRepeat
+            mouseLabel: qsTr("Repeat")
+        }
+
         Rectangle{
             implicitHeight: parent.height
             implicitWidth: parent.width
@@ -113,15 +139,23 @@ Item {
         MouseArea {
             id: idShuffle
             anchors.fill: parent
+            hoverEnabled: true
             onClicked: {
-//                myControl.changeMute()
+                //                myControl.changeMute()
             }
         }
+
+        MouseLabel{
+            mouseID: idShuffle
+            mouseLabel: qsTr("Shuffle")
+        }
+
+
         Rectangle{
             implicitHeight: parent.height
             implicitWidth: parent.width
             color: "transparent"
-//            border.color: repeat? "#2E4D5F" : "transparent"
+            //            border.color: repeat? "#2E4D5F" : "transparent"
         }
     }
 
@@ -137,21 +171,27 @@ Item {
 
         //play/pause button
         Image{
+            property bool playing: (myPlayer.state === 1)
             id: idControlBtn
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             enabled: (idListView.count === 0)? false : true;
             width: parent.height
             height: width
-            property bool playing: (myPlayer.state === 1)
             source: playing? Pic.pause : Pic.play
             MouseArea {
                 id: idPlayPause
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
-                    myControl.playpause()
+                    qmlplaypause()
                 }
 
+            }
+
+            MouseLabel{
+                mouseID: idPlayPause
+                mouseLabel: parent.playing? qsTr("Pause") : qsTr("Play")
             }
 
             Rectangle{
@@ -175,12 +215,19 @@ Item {
             width: 2*parent.height/3
             height: width
             source: Pic.next
+
             MouseArea {
                 id: idNext
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
-                    myControl.nextSong()
+                    qmlnextSong()
                 }
+            }
+
+            MouseLabel{
+                mouseID: idNext
+                mouseLabel: qsTr("Next")
             }
         }
 
@@ -197,12 +244,18 @@ Item {
             MouseArea {
                 id: idPrevious
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
                     if (idListView.currentIndex > 0)
                     {
-                        myControl.previousSong()
+                        qmlpreviousSong()
                     }
                 }
+            }
+
+            MouseLabel{
+                mouseID: idPrevious
+                mouseLabel: qsTr("Previous")
             }
         }
     }

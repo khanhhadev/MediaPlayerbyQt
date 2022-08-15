@@ -8,7 +8,16 @@ import "ImageLib.js" as Pic
 
 Window {
     id: mainWindow
-    signal qmlChangeDirectory()
+    signal qmlChangeDirectory()//
+    signal qmlselectSong(int index);
+    signal qmlnextSong();
+    signal qmlpreviousSong();
+    signal qmlplaypause();
+    signal qmlchangeMute();
+    signal qmlchangeRepeat();
+    signal qmlchangeDirectory();
+    signal qmladdFiles();
+    signal qmlsortList();
 
     width: 900
     height: 640

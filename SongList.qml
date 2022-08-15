@@ -19,7 +19,18 @@ ListView {
                 PropertyChanges {
                     target: idRect
                     border.color: "white"
-                    height: 70
+                    height: 90
+                }
+                PropertyChanges {
+                    target: idText
+                    //                    anchors.top: parent.top
+                    verticalAlignment: Text.AlignTop
+                }
+                PropertyChanges {
+                    target: idSongInfo
+                    //                    anchors.top: idText.bottom
+                    text: '\n' + "Tittle: " + myPlayer.currentSong[1]+ '\n' + "Album: " + myPlayer.currentSong[2] + '\n'
+                    + "Artist: " + myPlayer.currentSong[3] + '\n'+ myPlayer.currentSong[4]
                 }
             }
             Text {
@@ -28,10 +39,21 @@ ListView {
                 fontSizeMode: Text.Fit
                 color: parent.focus? "white" : "black"
                 elide: Text.ElideRight
-                anchors.verticalCenter: parent.verticalCenter
+                verticalAlignment: Text.AlignVCenter
+                //                anchors.verticalCenter: parent.verticalCenter
             }
+
+            Text {
+                id: idSongInfo
+                text: ""
+                fontSizeMode: Text.Fit
+                color: parent.focus? "white" : "black"
+                elide: Text.ElideRight
+            }
+
             onFocusChanged: {
                 if (!focus) idText.x = parent.x
+                console.log(myPlayer.currentSong)
             }
 
             //text moving animation
@@ -53,9 +75,6 @@ ListView {
                 onDoubleClicked: {
                     myControl.selectSong(index);
                     myControl.playpause()
-                }
-                onEntered: {
-                    idRect.state = 'entering'
                 }
             }
         }
@@ -88,10 +107,17 @@ ListView {
         source: Pic.folder
 
         MouseArea{
+            id: openFolderArea
             anchors.fill: parent
+            hoverEnabled: true
             onClicked: {
-                myControl.changeDirectory();
+                qmlchangeDirectory();
             }
+        }
+
+        MouseLabel{
+            mouseID: openFolderArea
+            mouseLabel: qsTr("Open Folder...")
         }
     }
 
@@ -106,10 +132,43 @@ ListView {
         source: Pic.add
 
         MouseArea{
+            id: addSongArea
             anchors.fill: parent
+            hoverEnabled: true
             onClicked: {
-                myControl.addFiles();
+                qmladdFiles();
             }
+        }
+
+        MouseLabel{
+            mouseID: addSongArea
+            mouseLabel: qsTr("Add Songs...")
+        }
+    }
+
+    Image
+    {
+        id: sortList
+        anchors.bottom: parent.bottom
+        anchors.right: addSong.left
+        anchors.rightMargin: 10
+        width: parent.width/5
+        height: width
+        source: Pic.sort
+
+        MouseArea{
+            id: sortListArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: {
+                qmlsortList();
+            }
+        }
+
+        MouseLabel{
+            mouseID: sortListArea
+            mouseLabel: qsTr("Sort by name: ")
         }
     }
 }
+

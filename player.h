@@ -57,6 +57,7 @@ public:
     void setSource(QString source);
 
     QStringList getCurrentSong() const;
+    void clearSongInfor();
 
 signals:
     void positionChanged(qint64);

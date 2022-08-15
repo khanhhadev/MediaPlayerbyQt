@@ -6,7 +6,11 @@ Rectangle {
     property real maxValue
     property real currentValue
     property real mheight
-    property real mwidth
+    property real mwidth    
+
+    property string dragAreaLabel
+    property MouseArea dragAreaID: progressDrag
+
     signal mcurrentValueChanged(real value)
     signal dragActive(bool active)
 
@@ -28,8 +32,8 @@ Rectangle {
         Rectangle {
             id: idProgressPoint
             x: (idSlider.width - width) * currentValue / maxValue
-            width: idSlider.width/25
-            height: parent.height
+            width: idSlider.width/22
+            height: parent.height*1.2
             z: 1
             radius: 3
             color: "#2E4D5F"
@@ -58,11 +62,18 @@ Rectangle {
             MouseArea {
                 id: progressDrag
                 anchors.fill: parent
+                hoverEnabled: true
                 drag.target: idProgressPoint
                 drag.axis: Drag.XAxis
                 drag.minimumX: 0
                 drag.maximumX: idSlider.width - idProgressPoint.width
             }
+
+//            MouseLabel{
+//                mouseID: progressDrag
+//                mouseLabel: dragAreaLabel
+//                z:1
+//            }
         }
     }
 }

@@ -8,7 +8,6 @@
         <file>SongList.qml</file>
         <file>image/add.png</file>
         <file>image/begin.png</file>
-        <file>image/end.png</file>
         <file>image/fastforward.png</file>
         <file>image/folder.png</file>
         <file>image/library.png</file>
@@ -23,5 +22,7 @@
         <file>MSlider.qml</file>
         <file>image/repeat.png</file>
         <file>image/shuffle.png</file>
+        <file>MouseLabel.qml</file>
+        <file>image/sort.png</file>
     </qresource>
 </RCC>

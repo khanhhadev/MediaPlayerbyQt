@@ -69,6 +69,21 @@ struct MediaDataItem {
                 && (album == item.album) && (artist == item.artist)
                 && (date == item.date);
     }
+
+    bool operator>(const MediaDataItem& item)
+    {
+        return QString::compare(name, item.name) > 0;
+    }
+    bool operator<(const MediaDataItem& item)
+    {
+        return QString::compare(name, item.name) < 0;
+    }
+
+    friend QDebug& operator<<(QDebug& output, const MediaDataItem& item)
+    {
+        output << item.source << item.name << item.album << item.artist;
+        return output;
+    }
 private:
     QString source, name, album, artist, date;
 };
@@ -87,7 +102,7 @@ public:
     MediaDataItem at(int row);
     void clear();
 
-
+    void sortList(bool asc);
 
     //    friend QDebug& operator<<(QDebug& output, const MediaDataList& list);
 protected:
@@ -105,6 +120,9 @@ private:
 };
 
 #endif // MEDIADATALIST_H
+
+
+
 
 //    Q_PROPERTY(QStringList songList READ getSongList WRITE setSongList NOTIFY songListChanged)
 //    Q_PROPERTY(QString directory READ getDirectory WRITE setDirectory NOTIFY directoryChanged)

@@ -1,5 +1,6 @@
 #include "browserdialog.h"
 #include <QFile>
+#include <QComboBox>
 
 BrowserDialog::BrowserDialog(QWidget *parentW, QObject *parent)
     : QObject{parent}, mBrowser(parentW)
@@ -48,7 +49,7 @@ void BrowserDialog::addFiles(QString directory)
     for (QUrl& song: files)
     {
         data.append(MediaDataItem(song.toString(), song.fileName()));
-        qDebug() << __FUNCTION__ << song.toString() <<song.fileName();
+        qDebug() << __FUNCTION__ << song.toString() << song.fileName();
     }
     emit directoryChanged(mBrowser.directoryUrl().toString(), data);
 }

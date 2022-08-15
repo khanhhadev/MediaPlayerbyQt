@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja_JP" sourcelanguage="en_US">
+<TS version="2.1" language="vi_VN">
 <context>
     <name>PlayerControl</name>
     <message>
         <location filename="PlayerControl.qml" line="86"/>
         <source>Unmute</source>
-        <translation>ミュート解除</translation>
+        <translation>Bật tiếng</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="86"/>
         <source>Mute</source>
-        <translation>ミュート</translation>
+        <translation>Tắt tiếng</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="118"/>
         <source>Repeat</source>
-        <translation>リピート</translation>
+        <translation>Lặp</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="148"/>
         <source>Shuffle</source>
-        <translation>シャッフル</translation>
+        <translation>Phát ngẫu nhiên</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="191"/>
         <source>Pause</source>
-        <translation>一時停止</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="191"/>
         <source>Play</source>
-        <translation>プレイ</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="225"/>
         <source>Next</source>
-        <translation>次へ</translation>
+        <translation>Bài tiếp</translation>
     </message>
     <message>
         <location filename="PlayerControl.qml" line="253"/>
         <source>Previous</source>
-        <translation>前へ</translation>
+        <translation>Bài trước</translation>
     </message>
 </context>
 <context>
@@ -49,12 +49,12 @@
     <message>
         <location filename="SongList.qml" line="120"/>
         <source>Open Folder...</source>
-        <translation>新しいフォルダを開く...</translation>
+        <translation>Mở thư mục mới...</translation>
     </message>
     <message>
         <location filename="SongList.qml" line="145"/>
         <source>Add Songs...</source>
-        <translation>曲を追加…</translation>
+        <translation>Thêm bài hát mới...</translation>
     </message>
     <message>
         <location filename="SongList.qml" line="170"/>
@@ -67,7 +67,7 @@
     <message>
         <location filename="main.qml" line="25"/>
         <source>Media Player</source>
-        <translation>メディアプレイヤー</translation>
+        <translation>Trình phát nhạc</translation>
     </message>
 </context>
 </TS>

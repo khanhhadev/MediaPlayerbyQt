@@ -85,6 +85,17 @@ void MediaDataList::clear()
     }
 }
 
+void MediaDataList::sortList(bool asc)
+{
+    qDebug() << __FUNCTION__ << mData;
+    std::sort(mData.begin(), mData.end()
+               /*[=](const MediaDataItem& item1, const MediaDataItem& item2) ->  bool
+                {return item1 > item2;}*/
+    );
+    emit layoutChanged();
+    qDebug() << __FUNCTION__ << mData ;
+}
+
 QHash<int, QByteArray> MediaDataList::roleNames() const
 {
     return mRoleNames;

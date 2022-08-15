@@ -24,16 +24,8 @@ public:
     int getCurrentIndex() const;
     void setCurrentIndex(const int currentIndex);
 
-    Q_INVOKABLE void selectSong(int index);
-    Q_INVOKABLE void nextSong();
-    Q_INVOKABLE void previousSong();
-    Q_INVOKABLE void playpause();
-    Q_INVOKABLE void changeMute();
-    Q_INVOKABLE void changeRepeat();
-    Q_INVOKABLE void changeDirectory();
-    Q_INVOKABLE void addFiles();
     void setSource(QString source);
-
+    void connectToView(QObject *object);
 signals:
     void directoryChanged();
     void currentIndexChanged();
@@ -46,6 +38,15 @@ public slots:
     void onEndOfSong();
     void onCurrentIndexChanged();
 
+    void selectSong(int index);
+    void nextSong();
+    void previousSong();
+    void playpause();
+    void changeMute();
+    void changeRepeat();
+    void changeDirectory();
+    void addFiles();
+    void sortList();
 private:
     //MEDIA PLAYER
     Player* myPlayer;

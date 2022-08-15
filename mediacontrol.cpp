@@ -4,10 +4,11 @@
 #include "browserdialog.h"
 
 MediaControl::MediaControl(Player *player, MediaDataList* songlist, QObject *parent)
-    : QObject{parent}, myPlayer(player), myData(songlist), mCurrentIndex(-1)
+    : QObject{parent}, myPlayer(player), myData(songlist)/*, mCurrentIndex(-1)*/
 {
     makeConnect();
     readBackup();
+    setCurrentIndex(0);
 }
 
 void MediaControl::makeConnect()
@@ -46,10 +47,13 @@ int MediaControl::getCurrentIndex() const
 
 void MediaControl::setCurrentIndex(const int currentIndex)
 {
-    if (mCurrentIndex != currentIndex)
+    if (currentIndex < myData->count())
     {
-        mCurrentIndex = currentIndex;
-        emit currentIndexChanged();
+        if (mCurrentIndex != currentIndex)
+        {
+            mCurrentIndex = currentIndex;
+            emit currentIndexChanged();
+        }
     }
 }
 
@@ -58,7 +62,9 @@ void MediaControl::selectSong(int index)
     setCurrentIndex(index);
     if (mCurrentIndex >= 0)
     {
+        QMediaPlayer::PlaybackState temp = myPlayer->getState();
         myPlayer->setSource(myData->at(mCurrentIndex).getValue(Roles::SourceRole));
+        myPlayer->setState(temp);
     }
 }
 
@@ -113,7 +119,7 @@ void MediaControl::onDirectoryChanged(QString path, QList<MediaDataItem> newlist
 {
     setDirectory(path);
     myData->addNewFiles(newlist);
-    setCurrentIndex(-1);
+    setCurrentIndex(0);
     writeBackup();
     qDebug() << __FUNCTION__ << myData->count();
 }
@@ -127,6 +133,33 @@ void MediaControl::changeDirectory()
 void MediaControl::addFiles()
 {
     myBrowser.addFiles(mDirectory);
+}
+
+void MediaControl::sortList()
+{
+    myData->sortList(true);
+}
+
+void MediaControl::connectToView(QObject *object)
+{
+    connect(object, SIGNAL(qmlselectSong(int))
+            , this ,SLOT(selectSong(int)));
+    connect(object, SIGNAL(qmlnextSong())
+            , this ,SLOT(nextSong()));
+    connect(object, SIGNAL(qmlpreviousSong())
+            , this ,SLOT(previousSong()));
+    connect(object, SIGNAL(qmlplaypause())
+            , this ,SLOT(playpause()));
+    connect(object, SIGNAL(qmlchangeMute())
+            , this ,SLOT(changeMute()));
+    connect(object, SIGNAL(qmlchangeRepeat())
+            , this ,SLOT(changeRepeat()));
+    connect(object, SIGNAL(qmlchangeDirectory())
+            , this ,SLOT(changeDirectory()));
+    connect(object, SIGNAL(qmladdFiles())
+            , this ,SLOT(addFiles()));
+    connect(object, SIGNAL(qmlsortList())
+            , this ,SLOT(sortList()));
 }
 
 void MediaControl::onListEnded()

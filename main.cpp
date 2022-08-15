@@ -19,6 +19,9 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     QTranslator translator;
+    qDebug() << translator.load("mediaplayer_jp.qm", app.applicationDirPath());
+    app.installTranslator(&translator);
+
     MediaDataList myData;
     Player myPlayer;
     MediaControl myControl(&myPlayer, &myData);
@@ -39,6 +42,7 @@ int main(int argc, char *argv[])
 
     engine.load(url);
     QObject *object = engine.rootObjects().at(0);
+    myControl.connectToView(object);
 
     return app.exec();
 }

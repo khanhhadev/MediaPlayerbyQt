@@ -1,6 +1,7 @@
 QT += \
     quick \
-    multimedia multimediawidgets\
+    multimedia \
+    multimediawidgets \
     core \
     widgets \
 
@@ -17,7 +18,7 @@ SOURCES += \
 
 RESOURCES += qml.qrc
 
-TRANSLATIONS = mediaplayer_en.ts mediaplayer_jp.ts
+TRANSLATIONS = mediaplayer_en.ts mediaplayer_jp.ts mediaplayer_vi.ts
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
@@ -41,4 +42,7 @@ HEADERS += \
     mediadatalist.h \
     player.h
 
-DISTFILES +=
+DISTFILES += \
+    HaTNK-Assignment0808_en.qm \
+    HaTNK-Assignment0808_jp.qm \
+    HaTNK-Assignment0808_vi.qm

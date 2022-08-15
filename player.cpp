@@ -23,6 +23,7 @@ Player::Player(QObject *parent)
     mAudio = new QAudioOutput;
     mAudio->setVolume(0.5);
     mMPlayer.setAudioOutput(mAudio);
+    mCurrentSong.append(QList<QString>{"", "", "", "", ""});
 }
 
 //set media player to play mode
@@ -196,11 +197,19 @@ void Player::setRepeat(const bool repeat)
 void Player::setSource(QString source)
 {
     mMPlayer.setSource(source);
+    clearSongInfor();
 }
 
 QStringList Player::getCurrentSong() const
 {
     return mCurrentSong;
+}
+
+void Player::clearSongInfor()
+{
+    for (int i = 0; i< 5; i ++)
+        mCurrentSong[i] = "";
+    emit currentSongChanged();
 }
 
 
@@ -219,17 +228,17 @@ void Player::onMediaStatusChanged()
     {
         QMediaMetaData songcontent = mMPlayer.metaData();
 
-//        mCurrentSong[0] = mMPlayer.source().toString();
-//        mCurrentSong[1] = songcontent.stringValue(QMediaMetaData::Title);
-//        mCurrentSong[2] = songcontent.stringValue(QMediaMetaData::AlbumTitle);
-//        mCurrentSong[3] = songcontent.stringValue(QMediaMetaData::ContributingArtist);
-//        mCurrentSong[4] = songcontent.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
-//        emit currentSongChanged();
+        mCurrentSong[0] = mMPlayer.source().toString();
+        mCurrentSong[1] = songcontent.stringValue(QMediaMetaData::Title);
+        mCurrentSong[2] = songcontent.stringValue(QMediaMetaData::AlbumTitle);
+        mCurrentSong[3] = songcontent.stringValue(QMediaMetaData::ContributingArtist);
+        mCurrentSong[4] = songcontent.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
+        emit currentSongChanged();
     }
 }
 
 void Player::onSourceChanged(QString source)
 {
-     setSource(source);
+    setSource(source);
 }
 
