@@ -1,15 +1,14 @@
-#include <QApplication>
-#include <QIcon>
 #include <QQmlApplicationEngine>
-#include <QtQuick>
+#include <QApplication>
 #include <QQmlContext>
 #include <QFileDialog>
-#include <QThread>
-#include <QTranslator>
+#include <QtQuick>
+#include <QIcon>
 
-#include "mediacontrol.h"
-#include "player.h"
-#include "mediadatalist.h"
+#include "Control/mediacontrol.h"
+#include "Control/Support/datastorage.h"
+#include "Model/player.h"
+#include "Model/mediadatalist.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,20 +17,20 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
-    QTranslator translator;
-    qDebug() << translator.load("mediaplayer_jp.qm", app.applicationDirPath());
-    app.installTranslator(&translator);
 
     MediaDataList myData;
     Player myPlayer;
-    MediaControl myControl(&myPlayer, &myData);
-    app.setWindowIcon(QIcon(":/image/music.png"));
+    MediaControl myControl(&myPlayer, &myData, &app);
 
+    app.setWindowIcon(QIcon(":/image/music.png"));
     QQmlApplicationEngine engine;
     QQmlContext *appRootContext = engine.rootContext();
     appRootContext->setContextProperty("myControl", &myControl);
     appRootContext->setContextProperty("myPlayer", &myPlayer);
     appRootContext->setContextProperty("myData", &myData);
+
+    myControl.getEngineRef(&engine);
+    myControl.setLanguage(1);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -41,8 +40,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     engine.load(url);
-    QObject *object = engine.rootObjects().at(0);
-    myControl.connectToView(object);
-
-    return app.exec();
+    app.exec();
+    myControl.backup();
+    return 1;
 }

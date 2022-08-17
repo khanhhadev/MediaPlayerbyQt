@@ -1,11 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>PlayerControl.qml</file>
         <file>image/background.jpg</file>
         <file>image/play.png</file>
         <file>image/pause.png</file>
         <file>image/main.jpg</file>
-        <file>SongList.qml</file>
         <file>image/add.png</file>
         <file>image/begin.png</file>
         <file>image/fastforward.png</file>
@@ -13,16 +11,26 @@
         <file>image/library.png</file>
         <file>image/next.png</file>
         <file>image/previous.png</file>
-        <file>MusicalArea.qml</file>
         <file>main.qml</file>
         <file>image/mute.png</file>
         <file>image/volume.png</file>
-        <file>ImageLib.js</file>
         <file>image/music.png</file>
-        <file>MSlider.qml</file>
         <file>image/repeat.png</file>
         <file>image/shuffle.png</file>
-        <file>MouseLabel.qml</file>
         <file>image/sort.png</file>
+        <file>image/ascsort.png</file>
+        <file>image/dessort.png</file>
+        <file>image/end.png</file>
+        <file>image/japan.png</file>
+        <file>image/united.png</file>
+        <file>image/vietnam.png</file>
+        <file>subparts/MusicalArea.qml</file>
+        <file>subparts/PlayerControl.qml</file>
+        <file>subparts/SongList.qml</file>
+        <file>subparts/subcomponents/LanguageBox.qml</file>
+        <file>subparts/subcomponents/MouseLabel.qml</file>
+        <file>subparts/subcomponents/MSlider.qml</file>
+        <file>libs/ImageLib.js</file>
+        <file>libs/ColorLib.js</file>
     </qresource>
 </RCC>

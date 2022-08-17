@@ -1,23 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Window 2.12
-import QtQuick.Dialogs
-import QtQuick.Layouts
-import Qt.labs.platform
-import "ImageLib.js" as Pic
-
+import "./libs/ImageLib.js" as Pic
+import "./subparts"
+import "./subparts/subcomponents"
 
 Window {
     id: mainWindow
-    signal qmlChangeDirectory()//
-    signal qmlselectSong(int index);
-    signal qmlnextSong();
-    signal qmlpreviousSong();
-    signal qmlplaypause();
-    signal qmlchangeMute();
-    signal qmlchangeRepeat();
-    signal qmlchangeDirectory();
-    signal qmladdFiles();
-    signal qmlsortList();
 
     width: 900
     height: 640
@@ -33,11 +21,17 @@ Window {
         z: -1
     }
 
-    MusicalArea{
+    MusicalArea {
         id: idMusicalArea
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 15
+    }
+
+    LanguageBox {
+        anchors.top: idMusicalArea.top
+        anchors.right: idMusicalArea.right
+        anchors.margins: 5
     }
 
     //containing playlist
@@ -50,7 +44,7 @@ Window {
         anchors.top: parent.top
         anchors.topMargin: 23
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 23
+        anchors.bottomMargin: 100
         width: 170;
         spacing: 3
         currentIndex: myControl.currentIndex

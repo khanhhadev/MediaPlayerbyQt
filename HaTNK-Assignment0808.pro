@@ -1,20 +1,21 @@
 QT += \
     quick \
     multimedia \
-    multimediawidgets \
     core \
     widgets \
+    xml
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        browserdialog.cpp \
+        Control/Support/browserdialog.cpp \
+        Control/Support/datastorage.cpp \
+        Control/mediacontrol.cpp \
+        Model/mediadatalist.cpp \
+        Model/player.cpp \
         main.cpp \
-        mediacontrol.cpp \
-        mediadatalist.cpp \
-        player.cpp
 
 RESOURCES += qml.qrc
 
@@ -24,11 +25,11 @@ QML_IMPORT_PATH =
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH += \
-        SongList.qml \
-        PlayerControl.qml \
-        ProgressBar.qml \
-        MusicalArea.qml \
-        MSlider.qml \
+        subparts/SongList.qml \
+        subparts/PlayerControl.qml \
+        subparts/MusicalArea.qml \
+        subparts/subcomponents/MSlider.qml \
+        subparts/subcomponents/LanguageBox.qml \
         main.qml
 
 # Default rules for deployment.
@@ -37,10 +38,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    browserdialog.h \
-    mediacontrol.h \
-    mediadatalist.h \
-    player.h
+    Control/Support/browserdialog.h \
+    Control/Support/datastorage.h \
+    Control/mediacontrol.h \
+    Model/mediadatalist.h \
+    Model/player.h \
 
 DISTFILES += \
     HaTNK-Assignment0808_en.qm \
