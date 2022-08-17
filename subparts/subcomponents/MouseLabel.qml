@@ -10,7 +10,7 @@ Text {
 
     font.pixelSize: 16
     text: ""
-    z: parent.z + 2
+    z: 2
 
     Rectangle {
         id: textFrame

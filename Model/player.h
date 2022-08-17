@@ -12,6 +12,7 @@ class Player : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QMediaPlayer::PlaybackState state READ getState /*WRITE setState*/ NOTIFY stateChanged)
+    \
     Q_PROPERTY(qreal volume READ volume WRITE setVolume NOTIFY volumeChanged)
 
     Q_PROPERTY(qint64 position READ position WRITE setPosition NOTIFY positionChanged)
@@ -63,6 +64,8 @@ public:
     QStringList currentSong() const;
     void clearSongInfor();
 
+    QString errorText() const;
+
 signals:
     void positionChanged(qint64);
     void durationChanged(qint64);
@@ -75,12 +78,14 @@ signals:
 
 public slots:
     void onMediaStatusChanged();
+    void onErrorChanged(QMediaPlayer::Error);
     void onSourceChanged(QString source);
 
 private:
     QMediaPlayer mMPlayer;
     QAudioOutput *mAudio;
     QStringList mCurrentSong;
+    QString mErrorText;
 };
 
 #endif // PLAYER_H

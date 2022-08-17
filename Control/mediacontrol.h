@@ -6,6 +6,7 @@
 
 #include "Control/Support/browserdialog.h"
 #include "Control/Support/datastorage.h"
+#include "Control/Support/languageset.h"
 #include "Model/mediadatalist.h"
 #include "Model/player.h"
 
@@ -74,6 +75,7 @@ private:
     bool mShuffle;
     int mCurrentIndex;
     QString mDirectory;
+    QString mLanguage;
 
     QApplication* app;
     QQmlApplicationEngine* engine;

@@ -9,6 +9,7 @@ Row {
         source: Pic.vietnam
         height: 15
         width: 22
+        z: parent.z -1
         MouseArea {
             id: vilang
             hoverEnabled: true
@@ -26,6 +27,7 @@ Row {
         source: Pic.united
         height: 15
         width: 22
+        z: parent.z -1
         MouseArea {
             id: enlang
             hoverEnabled: true
@@ -43,6 +45,7 @@ Row {
         source: Pic.japan
         height: 15
         width: 22
+        z: parent.z -1
         MouseArea {
             id: jplang
             hoverEnabled: true

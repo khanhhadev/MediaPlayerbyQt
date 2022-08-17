@@ -9,8 +9,7 @@ MediaControl::MediaControl(Player *player, MediaDataList* songlist, QApplication
     : QObject{parent}, myPlayer(player), myData(songlist), app(main), mShuffle(false)
 {
     makeConnect();
-    QString n;
-    setDirectory(DataStorage::readBackup(n));
+    setDirectory(DataStorage::readBackup(mLanguage));
     myBrowser.getListFromFolder(QUrl(mDirectory));
     setCurrentIndex(-1);
 }
@@ -32,8 +31,7 @@ void MediaControl::makeConnect()
 
 void MediaControl::backup()
 {
-    QString n;
-    DataStorage::writeBackup(mDirectory, n);
+    DataStorage::writeBackup(mDirectory, mLanguage);
 }
 
 void MediaControl::setDirectory(const QString dir)
@@ -169,26 +167,20 @@ void MediaControl::sortList()
 
 void MediaControl::setLanguage(int lang)
 {
-    static QTranslator translator;
-    static QString LangFile;
-    if (LangFile!= "")
-        app->removeTranslator(&translator);
     switch (lang) {
     case 1:
-        LangFile = "mediaplayer_vi.qm";
+        mLanguage = "mediaplayer_vi.qm";
         break;
     case 2:
-        LangFile = "mediaplayer_en.qm";
+        mLanguage = "mediaplayer_en.qm";
         break;
     case 3:
-        LangFile = "mediaplayer_jp.qm";
+        mLanguage = "mediaplayer_jp.qm";
         break;
     default:
         break;
     }
-    qDebug() << translator.load(LangFile, app->applicationDirPath());
-    app->installTranslator(&translator);
-    if (LangFile != "") engine->retranslate();
+    LanguageSet::setLanguage(app, engine, mLanguage);
 }
 
 void MediaControl::onListEnded()
@@ -219,6 +211,7 @@ void MediaControl::onCurrentIndexChanged()
 void MediaControl::getEngineRef(QQmlApplicationEngine *en)
 {
     engine = en;
+    LanguageSet::setLanguage(app, engine, mLanguage);
 }
 
 

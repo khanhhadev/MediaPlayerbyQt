@@ -22,6 +22,8 @@ Player::Player(QObject *parent)
     connect(&(this->mMPlayer), SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             this, SLOT(onMediaStatusChanged()));
 
+    connect(&(this->mMPlayer), SIGNAL(errorChanged(QMediaPlayer::MediaStatus)),
+            this, SLOT(onErrorChanged(QMediaPlayer::Error)));
 
     mAudio = new QAudioOutput;
     mAudio->setVolume(0.5);
@@ -240,20 +242,29 @@ void Player::onMediaStatusChanged()
         mCurrentSong[1] = songcontent.stringValue(QMediaMetaData::Title);
         mCurrentSong[2] = songcontent.stringValue(QMediaMetaData::AlbumTitle);
         mCurrentSong[3] = songcontent.stringValue(QMediaMetaData::ContributingArtist);
-        mCurrentSong[4] = songcontent.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
+//        mCurrentSong[4] = songcontent.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
 
         bool check = songcover.save("C:/Users/Dell/Music/text.png");
         qDebug() << __FUNCTION__ << check;
         emit currentSongChanged();
     }
         break;
+
     default:
         break;
     }
+}
+
+void Player::onErrorChanged(QMediaPlayer::Error error)
+{
+    if (error != QMediaPlayer::NoError)
+    {
+        mCurrentSong[4] = "Media data error! Can not play this song";
+    } else mCurrentSong[4] = "";
+    emit currentSongChanged();
 }
 
 void Player::onSourceChanged(QString source)
 {
     setSource(source);
 }
-

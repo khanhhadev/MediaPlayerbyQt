@@ -12,6 +12,7 @@ QT += \
 SOURCES += \
         Control/Support/browserdialog.cpp \
         Control/Support/datastorage.cpp \
+    Control/Support/languageset.cpp \
         Control/mediacontrol.cpp \
         Model/mediadatalist.cpp \
         Model/player.cpp \
@@ -40,6 +41,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Control/Support/browserdialog.h \
     Control/Support/datastorage.h \
+    Control/Support/languageset.h \
     Control/mediacontrol.h \
     Model/mediadatalist.h \
     Model/player.h \

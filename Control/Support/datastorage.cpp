@@ -18,18 +18,19 @@ QString DataStorage::readBackup(QString& language)
     if (DataFile.open(QIODevice::ReadWrite))
     {
         QTextStream stream(&DataFile);
-        while (!stream.atEnd())
-        {
+//        while (!stream.atEnd())
+//        {
             line = stream.readLine();
             qDebug() << __FUNCTION__ << line;
-            stream.readLine();
+//            stream.readLine();s
             language = stream.readLine();
             qDebug() << __FUNCTION__ << language;
-        }
+//        }
         DataFile.close();
 
     }
     if (line == "") line = mDataFileLocation;
+    qDebug() << language;
     return line;
 }
 
@@ -44,6 +45,6 @@ void DataStorage::writeBackup(QString mDirectory, QString& language)
         stream << QString(mDirectory)+'\n' + language;
         DataFile.flush();
         DataFile.close();
-        qDebug() << "writed" << mDirectory;
+        qDebug() << "writed" << mDirectory << language;
     }
 }

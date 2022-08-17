@@ -23,7 +23,7 @@ void BrowserDialog::getListFromFolder(QUrl path)
         itemurls.append(QUrl(path.toLocalFile() + "/"+ song));
     }
     emit directoryChanged(path.toString(), itemurls);
-    qDebug() << itemurls;
+//    qDebug() << itemurls;
 }
 
 //open browser dialog to select folder
@@ -33,7 +33,7 @@ void BrowserDialog::changeDirectory(QString directory)
     mBrowser.setDirectoryUrl(QUrl::fromLocalFile(directory));
     mBrowser.exec();
     getListFromFolder(mBrowser.directoryUrl());
-    qDebug() << __FUNCTION__ << mBrowser.directoryUrl().toString();
+//    qDebug() << __FUNCTION__ << mBrowser.directoryUrl().toString();
 }
 
 void BrowserDialog::addFiles(QString directory)

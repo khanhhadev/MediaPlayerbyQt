@@ -6,7 +6,7 @@
 #include <QIcon>
 
 #include "Control/mediacontrol.h"
-#include "Control/Support/datastorage.h"
+//#include "Control/Support/datastorage.h"
 #include "Model/player.h"
 #include "Model/mediadatalist.h"
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     appRootContext->setContextProperty("myData", &myData);
 
     myControl.getEngineRef(&engine);
-    myControl.setLanguage(1);
+//    myControl.setLanguage(1);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
