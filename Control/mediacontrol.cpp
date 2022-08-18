@@ -3,6 +3,8 @@
 
 #include "Control/mediacontrol.h"
 #include "Model/mediadatalist.h"
+#include "Control/Support/datastorage.h"
+#include "Control/Support/languageset.h"
 #include "Control/Support/browserdialog.h"
 
 MediaControl::MediaControl(Player *player, MediaDataList* songlist, QApplication *main, QObject *parent)

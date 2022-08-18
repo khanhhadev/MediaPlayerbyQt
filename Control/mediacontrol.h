@@ -5,8 +5,8 @@
 #include <QQmlApplicationEngine>
 
 #include "Control/Support/browserdialog.h"
-#include "Control/Support/datastorage.h"
-#include "Control/Support/languageset.h"
+//#include "Control/Support/datastorage.h"
+//#include "Control/Support/languageset.h"
 #include "Model/mediadatalist.h"
 #include "Model/player.h"
 

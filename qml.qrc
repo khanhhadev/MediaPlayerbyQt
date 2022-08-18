@@ -35,6 +35,6 @@
         <file>languages/mediaplayer_en.qm</file>
         <file>languages/mediaplayer_jp.qm</file>
         <file>languages/mediaplayer_vi.qm</file>
-        <file>subparts/subcomponents/MButton.qml</file>
+        <file>subparts/subcomponents/MRectButton.qml</file>
     </qresource>
 </RCC>
