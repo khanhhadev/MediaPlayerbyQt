@@ -98,15 +98,17 @@ ListView {
 
     Rectangle{
         id: listBackGround
-        anchors.fill: parent
-        anchors.left: parent.left
-        anchors.leftMargin: -7
-        anchors.right: parent.right
-        anchors.rightMargin: -7
-        anchors.top: parent.top
-        anchors.topMargin: -7
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: -70
+        anchors{
+            fill: parent
+            left: parent.left
+            leftMargin: -7
+            right: parent.right
+            rightMargin: -7
+            top: parent.top
+            topMargin: -7
+            bottom: parent.bottom
+            bottomMargin: -70
+        }
         clip: true
         radius: 5
         opacity: 0.6
@@ -119,8 +121,10 @@ ListView {
     Image
     {
         id: openFolder
-        anchors.bottom: listBackGround.bottom
-        anchors.right: parent.right
+        anchors{
+            bottom: listBackGround.bottom
+            right: parent.right
+        }
         width: parent.width/7
         height: width
         source: Pic.folder
@@ -148,9 +152,11 @@ ListView {
     Image
     {
         id: addSong
-        anchors.bottom: listBackGround.bottom
-        anchors.right: openFolder.left
-        anchors.rightMargin: 10
+        anchors{
+            bottom: listBackGround.bottom
+            right: openFolder.left
+            rightMargin: 10
+        }
         width: parent.width/7
         height: width
         source: Pic.add
@@ -174,9 +180,11 @@ ListView {
     Image
     {
         id: sortList
-        anchors.bottom: listBackGround.bottom
-        anchors.right: addSong.left
-        anchors.rightMargin: 10
+        anchors{
+            bottom: listBackGround.bottom
+            right: addSong.left
+            rightMargin: 10
+        }
         width: parent.width/7
         height: width
         source: Pic.sort

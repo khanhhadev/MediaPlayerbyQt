@@ -21,4 +21,22 @@ var vietnam = "qrc:/image/vietnam.png"
 var japan = "qrc:/image/japan.png"
 var united = "qrc:/image/united.png"
 
+var Language = [
+            {
+                source: vietnam,
+                langID: "mediaplayer_vi.qm",
+                label: "Tiếng Việt"
+            },
+            {
+                source: united,
+                langID: "mediaplayer_en.qm",
+                label: "English"
+            },
 
+            {
+                source: japan,
+                langID: "mediaplayer_jp.qm",
+                label: "日本語"
+            }
+
+        ]

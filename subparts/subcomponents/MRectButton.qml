@@ -8,7 +8,9 @@ Image{
 //    width: idcontrolArea.height*2/3
     height: width
     property bool condition: true
-    source: condition? Pic.mute : Pic.volume
+    property string source1
+    property string source2
+    source: condition? source1 : source2
 
     MouseLabel{
         mouseID: idMute

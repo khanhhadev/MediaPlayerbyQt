@@ -3,7 +3,6 @@ QT += \
     multimedia \
     core \
     widgets \
-    xml
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -12,7 +11,7 @@ QT += \
 SOURCES += \
         Control/Support/browserdialog.cpp \
         Control/Support/datastorage.cpp \
-    Control/Support/languageset.cpp \
+        Control/Support/languageset.cpp \
         Control/mediacontrol.cpp \
         Model/mediadatalist.cpp \
         Model/player.cpp \
@@ -39,6 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Control/Support/Setting.h \
     Control/Support/browserdialog.h \
     Control/Support/datastorage.h \
     Control/Support/languageset.h \

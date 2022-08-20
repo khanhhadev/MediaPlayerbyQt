@@ -17,20 +17,19 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":/image/music.png"));
 
     MediaDataList myData;
     Player myPlayer;
-    MediaControl myControl(&myPlayer, &myData, &app);
+    MediaControl* myControl;
 
-    app.setWindowIcon(QIcon(":/image/music.png"));
     QQmlApplicationEngine engine;
+    myControl = new  MediaControl(&myPlayer, &myData, &app, &engine);
+
     QQmlContext *appRootContext = engine.rootContext();
-    appRootContext->setContextProperty("myControl", &myControl);
     appRootContext->setContextProperty("myPlayer", &myPlayer);
     appRootContext->setContextProperty("myData", &myData);
-
-    myControl.getEngineRef(&engine);
-//    myControl.setLanguage(1);
+    appRootContext->setContextProperty("myControl", myControl);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -39,8 +38,9 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
+
     engine.load(url);
     app.exec();
-    myControl.backup();
+    myControl->backup();
     return 1;
 }

@@ -22,8 +22,8 @@ Player::Player(QObject *parent)
     connect(&(this->mMPlayer), SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             this, SLOT(onMediaStatusChanged()));
 
-    connect(&(this->mMPlayer), SIGNAL(errorChanged(QMediaPlayer::MediaStatus)),
-            this, SLOT(onErrorChanged(QMediaPlayer::Error)));
+//    connect(&(this->mMPlayer), SIGNAL(error(QMediaPlayer::Error)),
+//            this, SLOT(onErrorChanged(QMediaPlayer::Error)));
 
     mAudio = new QAudioOutput;
     mAudio->setVolume(0.5);
@@ -201,6 +201,7 @@ void Player::setRepeat(const bool repeat)
 
 void Player::setSource(QString source)
 {
+    static int count = 0; qDebug() << __FUNCTION__ << ++count;
     mMPlayer.setSource(source);
     clearSongInfor();
 }
@@ -234,6 +235,7 @@ void Player::onMediaStatusChanged()
         break;
     case QMediaPlayer::LoadedMedia:
     {
+        static int count = 0;
         QMediaMetaData songcontent = mMPlayer.metaData();
 
         QImage songcover(songcontent[QMediaMetaData::CoverArtImage].value<QImage>());
@@ -243,9 +245,7 @@ void Player::onMediaStatusChanged()
         mCurrentSong[2] = songcontent.stringValue(QMediaMetaData::AlbumTitle);
         mCurrentSong[3] = songcontent.stringValue(QMediaMetaData::ContributingArtist);
 //        mCurrentSong[4] = songcontent.value(QMediaMetaData::Date).toDate().toString("dd/MM/yyyy");
-
-        bool check = songcover.save("C:/Users/Dell/Music/text.png");
-        qDebug() << __FUNCTION__ << check;
+        qDebug() << __FUNCTION__ << ++count;
         emit currentSongChanged();
     }
         break;

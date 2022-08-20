@@ -6,7 +6,6 @@
 #define MEDIADATALIST_H
 
 #include <QObject>
-//#include <QFileSystemModel>
 #include <QUrl>
 #include <QDir>
 #include <QAbstractListModel>
@@ -22,7 +21,9 @@ enum Roles {
     DateRole
 };
 
-struct MediaDataItem {
+class MediaDataItem
+{
+public:
     MediaDataItem(QUrl fileSource)
     {
         source = fileSource.toString();
@@ -52,13 +53,13 @@ struct MediaDataItem {
             return "";
         }
     }
+
     bool operator==(const MediaDataItem& item)
     {
         return (source == item.source)&&(name == item.name)
                 && (album == item.album) && (artist == item.artist)
                 && (date == item.date);
     }
-
     bool operator>(const MediaDataItem& item)
     {
         return QString::compare(name, item.name) > 0;
@@ -73,9 +74,15 @@ struct MediaDataItem {
         output << item.source << item.name << item.album << item.artist;
         return output;
     }
+//public slots:
+//    void onSongContentLoaded()
+//    {
+
+//    }
 private:
     QString source, name, album, artist, date;
 };
+
 
 class MediaDataList : public QAbstractListModel
 {
@@ -100,6 +107,7 @@ protected:
 
 signals:
     void songListChanged();
+//    void sourceChanged(QString);
 
 private:
     QList<MediaDataItem> mData;

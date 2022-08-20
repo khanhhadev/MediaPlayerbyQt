@@ -12,7 +12,7 @@ class Player : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QMediaPlayer::PlaybackState state READ getState /*WRITE setState*/ NOTIFY stateChanged)
-    \
+
     Q_PROPERTY(qreal volume READ volume WRITE setVolume NOTIFY volumeChanged)
 
     Q_PROPERTY(qint64 position READ position WRITE setPosition NOTIFY positionChanged)

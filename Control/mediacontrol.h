@@ -6,7 +6,7 @@
 
 #include "Control/Support/browserdialog.h"
 //#include "Control/Support/datastorage.h"
-//#include "Control/Support/languageset.h"
+#include "Control/Support/languageset.h"
 #include "Model/mediadatalist.h"
 #include "Model/player.h"
 
@@ -16,7 +16,9 @@ class MediaControl : public QObject
     Q_PROPERTY(int currentIndex READ currentIndex NOTIFY currentIndexChanged)
     Q_PROPERTY(bool shuffle READ shuffle WRITE setShuffle NOTIFY shuffleChanged)
 public:
-    explicit MediaControl(Player *player, MediaDataList* songlist, QApplication* main, QObject *parent = nullptr);
+    explicit MediaControl(Player *player, MediaDataList* songlist,
+                          QApplication *main = nullptr, QQmlApplicationEngine* engine = nullptr,
+                          QObject *parent = nullptr);
 
     void makeConnect();
     void backup();
@@ -31,7 +33,7 @@ public:
 
     void setSource(QString source);
 
-    void getEngineRef(QQmlApplicationEngine* en);
+//    void getEngineRef(QQmlApplicationEngine* en);
 
     Q_INVOKABLE void selectSong(int index);
     Q_INVOKABLE void nextSong();
@@ -43,7 +45,7 @@ public:
     Q_INVOKABLE void changeDirectory();
     Q_INVOKABLE void addFiles();
     Q_INVOKABLE void sortList();
-    Q_INVOKABLE void setLanguage(int lang);
+    Q_INVOKABLE void setLanguage(QString lang);
 
     bool shuffle() const;
     void setShuffle(bool newShuffle);
@@ -72,13 +74,12 @@ private:
     //FOLDER DIALOG
     BrowserDialog myBrowser;
 
+    //LANGUAGE SETTING
+    LanguageSet myLanguage;
+
     bool mShuffle;
     int mCurrentIndex;
     QString mDirectory;
-    QString mLanguage;
-
-    QApplication* app;
-    QQmlApplicationEngine* engine;
 
 };
 

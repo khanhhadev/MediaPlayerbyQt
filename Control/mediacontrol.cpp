@@ -7,11 +7,16 @@
 #include "Control/Support/languageset.h"
 #include "Control/Support/browserdialog.h"
 
-MediaControl::MediaControl(Player *player, MediaDataList* songlist, QApplication *main, QObject *parent)
-    : QObject{parent}, myPlayer(player), myData(songlist), app(main), mShuffle(false)
+MediaControl::MediaControl(Player *player, MediaDataList* songlist,
+                           QApplication *main, QQmlApplicationEngine* engine,
+                           QObject *parent)
+    : QObject{parent}, myPlayer(player), myData(songlist),
+      mShuffle(false), myLanguage(main, engine)
 {
     makeConnect();
+    QString mLanguage;
     setDirectory(DataStorage::readBackup(mLanguage));
+    myLanguage.setLang(mLanguage);
     myBrowser.getListFromFolder(QUrl(mDirectory));
     setCurrentIndex(-1);
 }
@@ -27,13 +32,16 @@ void MediaControl::makeConnect()
     QObject::connect(this, &MediaControl::listEnded,
                      this, &MediaControl::onListEnded);
 
-    QObject::connect(this, &MediaControl::sourceChanged,
+    //    QObject::connect(this, &MediaControl::sourceChanged,
+    //                     this->myPlayer, &Player::onSourceChanged);
+
+    QObject::connect(this->myData, &MediaDataList::sourceChanged,
                      this->myPlayer, &Player::onSourceChanged);
 }
 
 void MediaControl::backup()
 {
-    DataStorage::writeBackup(mDirectory, mLanguage);
+//    DataStorage::writeBackup(mDirectory, mLanguage);
 }
 
 void MediaControl::setDirectory(const QString dir)
@@ -150,6 +158,7 @@ void MediaControl::onDirectoryChanged(QString path, QList<QUrl> newlist)
 void MediaControl::changeDirectory()
 {
     myData->clear();
+    setCurrentIndex(-1);
     myBrowser.changeDirectory(mDirectory);
 }
 
@@ -167,22 +176,9 @@ void MediaControl::sortList()
     asc = !asc;
 }
 
-void MediaControl::setLanguage(int lang)
+void MediaControl::setLanguage(QString lang)
 {
-    switch (lang) {
-    case 1:
-        mLanguage = "mediaplayer_vi.qm";
-        break;
-    case 2:
-        mLanguage = "mediaplayer_en.qm";
-        break;
-    case 3:
-        mLanguage = "mediaplayer_jp.qm";
-        break;
-    default:
-        break;
-    }
-    LanguageSet::setLanguage(app, engine, mLanguage);
+    myLanguage.setLanguage(lang);
 }
 
 void MediaControl::onListEnded()
@@ -210,11 +206,11 @@ void MediaControl::onCurrentIndexChanged()
     else emit sourceChanged(myData->at(0).getValue(Roles::SourceRole));
 }
 
-void MediaControl::getEngineRef(QQmlApplicationEngine *en)
-{
-    engine = en;
-    LanguageSet::setLanguage(app, engine, mLanguage);
-}
+//void MediaControl::getEngineRef(QQmlApplicationEngine *en)
+//{
+//    engine = en;
+//    LanguageSet::setLanguage(app, engine, mLanguage);
+//}
 
 
 bool MediaControl::shuffle() const

@@ -14,9 +14,8 @@
 class BrowserDialog : public QObject
 {
     Q_OBJECT
-
 public:
-    explicit BrowserDialog(QWidget *parentW = nullptr,QObject *parent = nullptr);
+    explicit BrowserDialog(QWidget *parentW = nullptr, QObject *parent = nullptr);
     void getListFromFolder(QUrl path);
 private:
     QFileDialog mBrowser;

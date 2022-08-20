@@ -48,9 +48,12 @@ void MediaDataList::addNewFiles(const QUrl &file)
 
 void MediaDataList::addNewFiles(const QList<QUrl> &list)
 {
+//    static int count = 0;
     for (QUrl itemurl : list)
     {
         addNewFiles(itemurl);
+//        emit sourceChanged(at(count).getValue(Roles::SourceRole));
+//        qDebug() << __FUNCTION__ << ++count;
     }
 }
 

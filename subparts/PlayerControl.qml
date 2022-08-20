@@ -7,26 +7,32 @@ Item {
     //current playing time
     Text{
         id: songPosition
-        anchors.verticalCenter: idProgressBar.verticalCenter
-        anchors.left: parent.left
+        anchors {
+            verticalCenter: idProgressBar.verticalCenter
+            left: parent.left
+        }
         text: myPlayer.positionText
     }
 
     //total time of song
     Text{
         id: songDuration
-        anchors.verticalCenter: idProgressBar.verticalCenter
-        anchors.right: parent.right
+        anchors{
+            verticalCenter: idProgressBar.verticalCenter
+            right: parent.right
+        }
         text: myPlayer.durationText
     }
 
     //song progress display
     MSlider{
         id: idProgressBar
-        anchors.top: parent.top
-        anchors.left: songPosition.right
-        anchors.right: songDuration.left
-        anchors.margins: 10
+        anchors{
+            top: parent.top
+            left: songPosition.right
+            right: songDuration.left
+            margins: 10
+        }
         radius: 3
         height: 12
         clip: true
@@ -42,9 +48,11 @@ Item {
     //volume display
     MSlider{
         id: idVolumeBar
-        anchors.right: songDuration.right
-        anchors.margins: 3
-        anchors.verticalCenter: parent.verticalCenter
+        anchors{
+            right: songDuration.right
+            margins: 3
+            verticalCenter: parent.verticalCenter
+        }
         radius: 3
         width: parent.width/4
         height: 10
@@ -61,9 +69,11 @@ Item {
     //mute/unmute button
     Image{
         id: idMuteBtn
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: idVolumeBar.left
-        anchors.rightMargin: width/4
+        anchors{
+            verticalCenter: parent.verticalCenter
+            right: idVolumeBar.left
+            rightMargin: width/4
+        }
         width: idcontrolArea.height*2/3
         height: width
         property bool mute: (myPlayer.volume === 0)||(myPlayer.muted)
@@ -88,9 +98,11 @@ Item {
 
     Image{
         id: idRepeatBtn
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: idcontrolArea.left
-        anchors.rightMargin: idcontrolArea.height
+        anchors{
+            verticalCenter: parent.verticalCenter
+            right: idcontrolArea.left
+            rightMargin: idcontrolArea.height
+        }
         width: idcontrolArea.height
         height: width*2/3
         source: Pic.repeat
@@ -131,7 +143,7 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-               myControl.changeShuffle()
+                myControl.changeShuffle()
             }
         }
 

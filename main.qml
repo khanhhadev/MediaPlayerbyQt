@@ -11,7 +11,7 @@ Window {
     height: 640
     visible: true
     title: qsTr("Media Player")
-    objectName: "MainObject"
+    //    objectName: "MainObject"
 
     //back ground
     Image {
@@ -23,28 +23,50 @@ Window {
 
     MusicalArea {
         id: idMusicalArea
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.margins: 15
+        anchors{
+            left: parent.left
+            top: parent.top
+            margins: 15
+        }
     }
 
     LanguageBox {
-        anchors.top: idMusicalArea.top
-        anchors.right: idMusicalArea.right
-        anchors.margins: 5
+        anchors{
+            top: idMusicalArea.top
+            right: idMusicalArea.right
+            margins: 5
+        }
     }
+
+//    Row {
+//        anchors{
+//            left: idListView.left
+//            bottom: idListView.top
+//            bottomMargin: 7
+//        }
+//        Repeater{
+//            model: 3
+//            Rectangle{
+//                height: 40
+//                width: idListView.width/3
+//                opacity: 0.7
+//            }
+//        }
+//    }
 
     //containing playlist
     SongList{
         id: idListView
-        anchors.left: idMusicalArea.right
-        anchors.leftMargin: 23
-        anchors.right: parent.right
-        anchors.rightMargin: 23
-        anchors.top: parent.top
-        anchors.topMargin: 23
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 100
+        anchors{
+            left: idMusicalArea.right
+            leftMargin: 23
+            right: parent.right
+            rightMargin: 23
+            top: parent.top
+            topMargin: 53
+            bottom: parent.bottom
+            bottomMargin: 100
+        }
         width: 170;
         spacing: 3
         currentIndex: myControl.currentIndex
@@ -54,13 +76,15 @@ Window {
     //containing media control buttons
     PlayerControl{
         id: idMediaControl
-        anchors.fill: parent.horizontal
-        anchors.left: parent.left
-        anchors.leftMargin: 15
-        anchors.top: idMusicalArea.bottom
-        anchors.right: idListView.left
-        anchors.rightMargin: 23
-        anchors.bottom: parent.bottom
+        anchors{
+            fill: parent.horizontal
+            left: parent.left
+            leftMargin: 15
+            top: idMusicalArea.bottom
+            right: idListView.left
+            rightMargin: 23
+            bottom: parent.bottom
+        }
         height: parent.height - idMusicalArea.height
         width: parent.width
 
