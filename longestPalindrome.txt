@@ -1,0 +1,65 @@
+class Solution {
+public:
+ 
+void maxPalindrome(string  s, int a,  int& start, int& end)
+{
+    int l, r;
+    bool pivot = true;
+    while (true)
+    {
+        if (pivot)
+        {
+            l = a - 1;
+            r = a + 1;
+        }
+        else {
+            l = a;
+            r = a + 1;
+        }
+        while ((l >= 0) && (r < s.length()))
+        {
+            if (s[l] != s[r]) break;
+            else { l--; r++; }
+        }
+        l++; r--;
+        if ((r - l) >= 1)
+            if ((r - l) > (end - start))
+            {
+                start = l;
+                end = r;
+            }
+        pivot = !pivot;
+        if (pivot) break;
+    }
+}
+string longestPalindrome(string s)
+{
+    string longest ;
+    int count = s.length();
+    if (count <= 1) return s;
+
+
+    int i = count / 2;
+    int l = i - 1, r = i;
+
+    int start = 0, end = 0;
+
+    while (((end - start + 1)/2  <= l)&&((l >= 0) || (r < count)))
+    {
+        if (l >= 0)
+        {
+            maxPalindrome(s, l, start, end);
+            l--;
+        }
+
+        if (r < count)
+        {
+            maxPalindrome(s, r, start, end);
+            r++;
+        }
+    }
+    for (int k = start; k <= end; k++) longest += s[k];
+    return longest;
+}
+
+};

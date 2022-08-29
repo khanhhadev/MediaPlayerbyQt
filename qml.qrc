@@ -1,41 +1,66 @@
 <RCC>
     <qresource prefix="/">
-        <file>image/background.jpg</file>
-        <file>image/play.png</file>
-        <file>image/pause.png</file>
-        <file>image/main.jpg</file>
+        <file>main.qml</file>
+        <file>general/buttons/QImgButton.qml</file>
+        <file>general/buttons/QRectButton.qml</file>
+        <file>general/delegates/QArtist.qml</file>
+        <file>general/delegates/QSong.qml</file>
+        <file>general/delegates/QSong2.qml</file>
+        <file>general/QBasicList.qml</file>
+        <file>general/QPlayerControl.qml</file>
+        <file>general/QSlider.qml</file>
+        <file>general/QToolTip.qml</file>
         <file>image/add.png</file>
+        <file>image/ascsort.png</file>
+        <file>image/background.jpg</file>
         <file>image/begin.png</file>
+        <file>image/dessort.png</file>
+        <file>image/end.png</file>
         <file>image/fastforward.png</file>
         <file>image/folder.png</file>
+        <file>image/japan.png</file>
         <file>image/library.png</file>
-        <file>image/next.png</file>
-        <file>image/previous.png</file>
-        <file>main.qml</file>
-        <file>image/mute.png</file>
-        <file>image/volume.png</file>
+        <file>image/main.jpg</file>
         <file>image/music.png</file>
+        <file>image/mute.png</file>
+        <file>image/next.png</file>
+        <file>image/pause.png</file>
+        <file>image/play.png</file>
+        <file>image/previous.png</file>
         <file>image/repeat.png</file>
         <file>image/shuffle.png</file>
         <file>image/sort.png</file>
-        <file>image/ascsort.png</file>
-        <file>image/dessort.png</file>
-        <file>image/end.png</file>
-        <file>image/japan.png</file>
         <file>image/united.png</file>
         <file>image/vietnam.png</file>
-        <file>subparts/MusicalArea.qml</file>
-        <file>subparts/PlayerControl.qml</file>
-        <file>subparts/SongList.qml</file>
-        <file>subparts/subcomponents/LanguageBox.qml</file>
-        <file>subparts/subcomponents/MouseLabel.qml</file>
-        <file>subparts/subcomponents/MSlider.qml</file>
-        <file>libs/ImageLib.js</file>
-        <file>libs/ColorLib.js</file>
+        <file>image/volume.png</file>
         <file>languages/mediaplayer_en.qm</file>
+        <file>languages/mediaplayer_en.ts</file>
         <file>languages/mediaplayer_jp.qm</file>
+        <file>languages/mediaplayer_jp.ts</file>
         <file>languages/mediaplayer_vi.qm</file>
-        <file>subparts/subcomponents/MRectButton.qml</file>
-        <file>libs/FileLib.js</file>
+        <file>languages/mediaplayer_vi.ts</file>
+        <file>screen1/QAlbumList.qml</file>
+        <file>screen1/QArtistList.qml</file>
+        <file>screen1/QMusicalArea.qml</file>
+        <file>screen1/QPlaybackScreen.qml</file>
+        <file>screen1/QSongList.qml</file>
+        <file>screen1/QTabBar1.qml</file>
+        <file>screen2/QLibraryScreen.qml</file>
+        <file>screen2/QSongGrid.qml</file>
+        <file>screen2/QTabBar2.qml</file>
+        <file>libs/Lib.js</file>
+        <file>screen2/QAlbumGrid.qml</file>
+        <file>screen2/QArtistGrid.qml</file>
+        <file>general/delegates/QTextBox.qml</file>
+        <file>general/QTabBar.qml</file>
+        <file>general/QMenuBar.qml</file>
+        <file>general/QMenuPopUp.qml</file>
+        <file>general/QPopUpItem.qml</file>
+        <file>general/delegates/QAlbum.qml</file>
+        <file>image/artist.png</file>
+        <file>image/heart.png</file>
+        <file>image/hearted.png</file>
+        <file>general/QViewPopup.qml</file>
+        <file>about.qml</file>
     </qresource>
 </RCC>

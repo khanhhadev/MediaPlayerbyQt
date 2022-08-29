@@ -1,0 +1,19 @@
+void BrowserDialog::getListFromFolder(QUrl path, bool& clear)
+{
+    qDebug()  __FUNCTION__  path;
+    QDir directory(path.toLocalFile());
+    QDirIterator  it(path.toLocalFile(), QDirDirsQDirNoDotAndDotDot, QDirIteratorSubdirectories);
+    QString absoPath = it.path();
+    while(it.hasNext()){
+        absoPath = it.next();
+        getListFromFolder(QUrlfromLocalFile(absoPath), clear);
+    }
+    QListQUrl itemurls;
+    QStringList sourcelist  = directory.entryList(QStringList()  .wav  .mid  .aif  .mp3, QDirFiles);
+    for (QString& song sourcelist)
+    {
+        itemurls  QUrlfromLocalFile(path.toLocalFile() + + song);
+    }
+    emit directoryChanged(clear, path.toString(), itemurls);
+    clear = false;
+}

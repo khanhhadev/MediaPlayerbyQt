@@ -9,28 +9,28 @@ QT += \
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        Control/Support/browserdialog.cpp \
-        Control/Support/datastorage.cpp \
-        Control/Support/languageset.cpp \
-        Control/mediacontrol.cpp \
-        Model/mediadatalist.cpp \
-        Model/player.cpp \
+        controls/Support/browserdialog.cpp \
+        controls/Support/languageset.cpp \
+        controls/mediacontrol.cpp \
+        models/player.cpp \
+        models/playlist.cpp \
+        models/subelements/albumelement.cpp \
+        models/subelements/artistelement.cpp \
+        models/subelements/imageitem.cpp \
+        models/subelements/songelement.cpp \
+        models/subelements/songloader.cpp \
         main.cpp \
 
 RESOURCES += qml.qrc
 
-TRANSLATIONS = mediaplayer_en.ts mediaplayer_jp.ts mediaplayer_vi.ts
+TRANSLATIONS += languages/mediaplayer_en.ts \
+                languages/mediaplayer_jp.ts \
+                languages/mediaplayer_vi.ts
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH += \
-        subparts/SongList.qml \
-        subparts/PlayerControl.qml \
-        subparts/MusicalArea.qml \
-        subparts/subcomponents/MSlider.qml \
-        subparts/subcomponents/LanguageBox.qml \
-        main.qml
+QML_DESIGNER_IMPORT_PATH +=
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -38,15 +38,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    Control/Support/Setting.h \
-    Control/Support/browserdialog.h \
-    Control/Support/datastorage.h \
-    Control/Support/languageset.h \
-    Control/mediacontrol.h \
-    Model/mediadatalist.h \
-    Model/player.h \
+    controls/Support/browserdialog.h \
+    controls/Support/languageset.h \
+    controls/Support/setting.h \
+    controls/mediacontrol.h \
+    models/player.h \
+    models/playlist.h \
+    models/subelements/imageitem.h \
+    models/subelements/songelement.h \
+    models/subelements/songloader.h \
+    models/subelements/albumelement.h \
+    models/subelements/artistelement.h \
 
 DISTFILES += \
-    HaTNK-Assignment0808_en.qm \
-    HaTNK-Assignment0808_jp.qm \
-    HaTNK-Assignment0808_vi.qm
+    languages/mediaplayer_en.qm \
+    languages/mediaplayer_jp.qm \
+    languages/mediaplayer_vi.qm

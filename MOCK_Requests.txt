@@ -1,0 +1,23 @@
+MOCK Qt
+
+Xây dựng app Media player, chi tiết requirement như sau
+1. Có các màn hình sau
+- Playback screen (bao gồm playback control và playlist): Đủ các chức năng (Next/Pre, Seek, Shufle, volume, cover art)
+    + Playlist cần có section (ABCDC - Sort và group theo tên bài hat)
+- Libraries (bao gồm 4 loại list (swithed bằng tab component)): Album, Folder, Songs, Favorites
+    + List cần có section (ABCD - Sort theo alphabet của list tương ứng)
+    + Plus point: Có thể request play cả album, folder từ màn hình này
+- Popup change language (Min 2 language)
+- Popup About (thông tin app)
+- Menubar: Có context menu
+    - Libraries/Back (back khi ở màn hình libs)
+    - Open file
+    - Open Folder (có đệ quy folder)
+    - Change language
+    - About
+2. Chức năng
+- Phải build được và chạy được
+- Comment rõ ràng
+- Design sáng sủa, mạch lạc
+- Tối giản qml/js
+- Bố cục QMl simple, less in more

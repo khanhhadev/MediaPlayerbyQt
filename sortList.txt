@@ -1,0 +1,25 @@
+//ở class listmodel
+void PlayList::sortList(bool asc)
+{
+    if (asc)
+    {
+        std::sort(mData.begin(), mData.end());
+    }
+    else
+    {
+        std::reverse(mData.begin(), mData.end());
+    }
+    emit layoutChanged();
+}
+
+// ở class modelitem
+bool SongElement::operator>(const SongElement& item)
+{
+    return QString::compare(name, item.name) > 0;
+}
+
+bool SongElement::operator<(const SongElement& item)
+{
+    return QString::compare(name, item.name) < 0;
+}
+

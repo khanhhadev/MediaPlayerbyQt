@@ -5,10 +5,11 @@
 #include <QtQuick>
 #include <QIcon>
 
-#include "Control/mediacontrol.h"
-//#include "Control/Support/datastorage.h"
-#include "Model/player.h"
-#include "Model/mediadatalist.h"
+#include "controls/mediacontrol.h"
+//#include "controls/Support/datastorage.h"
+#include "models/player.h"
+#include "models/playlist.h"
+#include "models/subelements/imageitem.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,12 +19,12 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/image/music.png"));
-
-    MediaDataList myData;
+    PlayList myData;
     Player myPlayer;
-    MediaControl* myControl;
+    MediaControl* myControl = nullptr;
 
     QQmlApplicationEngine engine;
+    qmlRegisterType<ImageItem>("CustomImage", 1, 0, "ImageItem");
     myControl = new  MediaControl(&myPlayer, &myData, &app, &engine);
 
     QQmlContext *appRootContext = engine.rootContext();
@@ -31,13 +32,14 @@ int main(int argc, char *argv[])
     appRootContext->setContextProperty("myData", &myData);
     appRootContext->setContextProperty("myControl", myControl);
 
+
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
-
 
     engine.load(url);
     app.exec();
